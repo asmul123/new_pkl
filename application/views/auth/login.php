@@ -17,7 +17,7 @@
   class="light-style customizer-hide"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="<?=base_url('public/')?>assets/"
+  data-assets-path="<?= base_url('public/') ?>assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?=base_url('public/')?>assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="<?= base_url('public/') ?>assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,25 +43,25 @@
     />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="<?=base_url('public/')?>assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="<?= base_url('public/') ?>assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="<?=base_url('public/')?>assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="<?=base_url('public/')?>assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="<?=base_url('public/')?>assets/css/demo.css" />
+    <link rel="stylesheet" href="<?= base_url('public/') ?>assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="<?= base_url('public/') ?>assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="<?= base_url('public/') ?>assets/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="<?=base_url('public/')?>assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="<?= base_url('public/') ?>assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="<?=base_url('public/')?>assets/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="<?= base_url('public/') ?>assets/vendor/css/pages/page-auth.css" />
     <!-- Helpers -->
-    <script src="<?=base_url('public/')?>assets/vendor/js/helpers.js"></script>
+    <script src="<?= base_url('public/') ?>assets/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="<?=base_url('public/')?>assets/js/config.js"></script>
+    <script src="<?= base_url('public/') ?>assets/js/config.js"></script>
   </head>
 
   <body>
@@ -78,15 +78,15 @@
                   <h3><span class="app-brand-text text-body fw-bolder">Jurnal PKL Online</span></h3>
                 </div>
                 <!-- /Logo -->
-                <img src="<?=base_url('public/assets/img/illustrations/man-with-laptop-light.png')?>" width="100%" />
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <img src="<?= base_url('public/assets/img/illustrations/man-with-laptop-light.png') ?>" width="100%" />                
+              <?= $this->session->flashdata('pesan'); ?>
+              <form id="formAuthentication" class="mb-3" action="<?= base_url('auth') ?>" method="POST">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email or Username</label>
-                  <input
-                    type="text"
+                  <input type="text"
                     class="form-control"
                     id="email"
-                    name="email-username"
+                    name="email"
                     placeholder="Enter your email or username"
                     autofocus
                   />
@@ -120,18 +120,18 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="<?=base_url('public/')?>assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="<?=base_url('public/')?>assets/vendor/libs/popper/popper.js"></script>
-    <script src="<?=base_url('public/')?>assets/vendor/js/bootstrap.js"></script>
-    <script src="<?=base_url('public/')?>assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="<?= base_url('public/') ?>assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="<?= base_url('public/') ?>assets/vendor/libs/popper/popper.js"></script>
+    <script src="<?= base_url('public/') ?>assets/vendor/js/bootstrap.js"></script>
+    <script src="<?= base_url('public/') ?>assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="<?=base_url('public/')?>assets/vendor/js/menu.js"></script>
+    <script src="<?= base_url('public/') ?>assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="<?=base_url('public/')?>assets/js/main.js"></script>
+    <script src="<?= base_url('public/') ?>assets/js/main.js"></script>
 
     <!-- Page JS -->
 
