@@ -9,19 +9,19 @@ class Auth extends CI_Controller
 		parent::__construct();
 		if ($this->session->userdata('email')) {
 			if ($this->session->userdata('role_id') == 1) {
-				redirect('admin');
+				redirect(base_url('admin'));
 			} else
 			if ($this->session->userdata('role_id') == 2) {
-				redirect('kakom');
+				redirect(base_url('kakom'));
 			} else
 			if ($this->session->userdata('role_id') == 3) {
-				redirect('pembimbing');
+				redirect(base_url('pembimbing'));
 			} else
 			if ($this->session->userdata('role_id') == 4) {
-				redirect('instruktur');
+				redirect(base_url('instruktur'));
 			} else
 			if ($this->session->userdata('role_id') == 5) {
-				redirect('peserta');
+				redirect(base_url('peserta'));
 			}
 		}
 		$this->load->library('form_validation');

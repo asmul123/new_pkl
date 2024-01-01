@@ -14,7 +14,8 @@ class Admin extends CI_Controller
 
 	public function index()
 	{
-			$this->load->view('templates/header');
+		$header['title'] = "Beranda Admin";
+			$this->load->view('templates/header', $header);
 			$this->load->view('templates/sidebar');
 			$this->load->view('templates/navbar');
 			$this->load->view('admin/beranda');
