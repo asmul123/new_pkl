@@ -8,6 +8,7 @@ class Peserta_model extends CI_model
         $this->db->from('partisipants');
         $this->db->join('users', 'users.user_id = partisipants.user_id');
         $this->db->join('majors', 'majors.major_id = partisipants.major_id');
+        $this->db->join('roles', 'roles.role_id = users.role_id');
         $this->db->where('email', $email);
         return $this->db->get()->row();
     }

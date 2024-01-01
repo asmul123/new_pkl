@@ -7,6 +7,7 @@ class Admin_model extends CI_model
         $this->db->select('*');
         $this->db->from('admins');
         $this->db->join('users', 'users.user_id = admins.user_id');
+        $this->db->join('roles', 'roles.role_id = users.role_id');
         $this->db->where('email', $email);
         return $this->db->get()->row();
     }

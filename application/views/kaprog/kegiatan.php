@@ -24,8 +24,8 @@
                                         Aksi
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="<?= base_url('admin/kegiatanadd') ?>"><i class="bx bx-plus me-1"></i> Tambah</a></li>
-                                        <li><a class="dropdown-item" href="<?= base_url('admin/kegiatanimport') ?>"><i class="bx bx-upload me-1"></i> Import</a></li>
+                                        <li><a class="dropdown-item" href="<?= base_url('kaprog/kegiatanadd') ?>"><i class="bx bx-plus me-1"></i> Tambah</a></li>
+                                        <li><a class="dropdown-item" href="<?= base_url('kaprog/kegiatanimport') ?>"><i class="bx bx-upload me-1"></i> Import</a></li>
                                     </ul>
                                 </div>
                             </th>
@@ -49,8 +49,8 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="<?= base_url('admin/kegiatanedit/' . $k->event_id) ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                            <a class="dropdown-item" href="<?= base_url('admin/kegiatanhapus/' . $k->event_id) ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="bx bx-trash me-1"></i> Hapus</a>
+                                            <a class="dropdown-item" href="<?= base_url('kaprog/kegiatanedit/' . $k->event_id) ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="<?= base_url('kaprog/kegiatanhapus/' . $k->event_id) ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="bx bx-trash me-1"></i> Hapus</a>
                                         </div>
                                     </div>
                                 </td>

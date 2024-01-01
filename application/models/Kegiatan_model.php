@@ -10,6 +10,15 @@ class Kegiatan_model extends CI_model
         return $this->db->get()->result();
     }
 
+    public function getEventMajors($majorID)
+    {
+        $this->db->select('*');
+        $this->db->from('events');
+        $this->db->join('majors', 'majors.major_id = events.major_id');
+        $this->db->where('events.major_id', $majorID);
+        return $this->db->get()->result();
+    }
+
     public function getThisEvent($eventID)
     {
         $this->db->select('*');

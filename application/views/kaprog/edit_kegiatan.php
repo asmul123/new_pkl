@@ -12,7 +12,7 @@
                         <?= $this->session->flashdata('pesan'); ?>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="<?= base_url('admin/kegiatanedit/' . $eventID) ?>" enctype="multipart/form-data">
+                        <form method="POST" action="<?= base_url('kaprog/kegiatanedit/' . $eventID) ?>" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label class="form-label">Nama Kegiatan</label>
                                 <div class="input-group input-group-merge">
@@ -32,21 +32,6 @@
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-calendar"></i></span>
                                     <input type="date" name="finish_date" class="form-control" placeholder="Tanggal Selesai Kegiatan" value="<?= $kegiatan->finish_date ?>" />
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Program Keahlian</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
-                                    <select name="major_id" class="form-control" placeholder="Program Keahlian">
-                                        <option value="">Pilih Program Keahlian</option>
-                                        <?php foreach ($program as $p) {  ?>
-                                            <option value="<?= $p->major_id ?>" <?php if ($p->major_id == $kegiatan->major_id) {
-                                                                                    echo "selected";
-                                                                                } ?>><?= $p->major ?></option>
-                                        <?php
-                                        } ?>
-                                    </select>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -71,7 +56,7 @@
                                     <input type="file" name="document" class="form-control" placeholder="Pilih Dokumen Kegiatan" />
                                 </div>
                             </div>
-                            <a href="<?= base_url('admin/kegiatan') ?>" class="btn btn-warning">Kembali</a>
+                            <a href="<?= base_url('kaprog/kegiatan') ?>" class="btn btn-warning">Kembali</a>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
                     </div>

@@ -22,17 +22,17 @@
                 </div>
 
                 <div class="menu-inner-shadow"></div>
-                <?php
-                if ($this->session->userdata('role_id') == 1) {
-                ?>
-                    <!-- Menu Admin -->
-                    <ul class="menu-inner py-1">
-                        <li class="menu-item active">
-                            <a href="<?= base_url() ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                <div data-i18n="Analytics">Dashboard</div>
-                            </a>
-                        </li>
+                <ul class="menu-inner py-1">
+                    <li class="menu-item active">
+                        <a href="<?= base_url() ?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Dashboard</div>
+                        </a>
+                    </li>
+                    <?php
+                    if ($this->session->userdata('role_id') == 1) {
+                    ?>
+                        <!-- Menu Admin -->
                         <li class="menu-item">
                             <a href="<?= base_url('admin/kegiatan') ?>" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-run"></i>
@@ -63,25 +63,40 @@
                                 <div data-i18n="Analytics">Program Keahlian</div>
                             </a>
                         </li>
+                        <!-- Akhir Menu Admin -->
+                    <?php
+                    } else if ($this->session->userdata('role_id') == 2) {
+                    ?>
+                        <!-- Menu Kaprog -->
                         <li class="menu-item">
-                            <a href="<?= base_url('keluar') ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-power-off"></i>
-                                <div data-i18n="Analytics">Keluar</div>
+                            <a href="<?= base_url('kaprog/kegiatan') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-run"></i>
+                                <div data-i18n="Analytics">Kegiatan</div>
                             </a>
                         </li>
-                    </ul>
-                    <!-- Akhir Menu Admin -->
-                <?php
-                } else if ($this->session->userdata('role_id') == 5) {
-                ?>
-                    <!-- Menu Peserta -->
-                    <ul class="menu-inner py-1">
-                        <li class="menu-item active">
-                            <a href="<?= base_url() ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                <div data-i18n="Analytics">Dashboard</div>
+                        <li class="menu-item">
+                            <a href="<?= base_url('kaprog/dudika') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-buildings"></i>
+                                <div data-i18n="Analytics">Dudika</div>
                             </a>
                         </li>
+                        <li class="menu-item">
+                            <a href="<?= base_url('kaprog/pembimbing') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Pembimbing</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="<?= base_url('kaprog/peserta') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Peserta</div>
+                            </a>
+                        </li>
+                        <!-- Akhir Menu Kaprog -->
+                    <?php
+                    } else if ($this->session->userdata('role_id') == 5) {
+                    ?>
+                        <!-- Menu Peserta -->
                         <li class="menu-item">
                             <a href="<?= base_url('peserta/presensi') ?>" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-calendar"></i>
@@ -112,16 +127,16 @@
                                 <div data-i18n="Analytics">Laporan</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="<?= base_url('keluar') ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-power-off"></i>
-                                <div data-i18n="Analytics">Keluar</div>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- Akhir Menu Peserta -->
-                <?php
-                }
-                ?>
+                        <!-- Akhir Menu Peserta -->
+                    <?php
+                    }
+                    ?>
+                    <li class="menu-item">
+                        <a href="<?= base_url('keluar') ?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-power-off"></i>
+                            <div data-i18n="Analytics">Keluar</div>
+                        </a>
+                    </li>
+                </ul>
             </aside>
             <!-- / Menu -->

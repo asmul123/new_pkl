@@ -1,45 +1,45 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin extends CI_Controller
+class Kaprog extends CI_Controller
 {
 
 	public function __construct()
 	{
 		parent::__construct();
-		if (!$this->session->userdata('email') or $this->session->userdata('role_id') != 1) {
+		if (!$this->session->userdata('email') or $this->session->userdata('role_id') != 2) {
 			redirect(base_url('auth'));
 		}
-		$this->load->model('Admin_model');
+		$this->load->model('Kaprog_model');
 	}
 
 	public function index()
 	{
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
-		$header['title'] = "Beranda Admin - Jurnal PKL Online SMKN 1 GARUT";
+		$header['title'] = "Beranda Kaprog - Jurnal PKL Online SMKN 1 GARUT";
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
-		$this->load->view('admin/beranda');
+		$this->load->view('kaprog/beranda');
 		$this->load->view('templates/footer');
 	}
 
 	public function kegiatan()
 	{
 		$this->load->model('Kegiatan_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Daftar Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
-		$data['kegiatan'] = $this->Kegiatan_model->getEvents();
+		$data['kegiatan'] = $this->Kegiatan_model->getEventMajors($biodata->major_id);
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
-		$this->load->view('admin/kegiatan', $data);
+		$this->load->view('kaprog/kegiatan', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -47,7 +47,7 @@ class Admin extends CI_Controller
 	{
 		$this->load->model('Program_model');
 		$this->load->model('Tapel_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -57,13 +57,12 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('event_name', 'Nama Kegiatan', 'required|trim');
 		$this->form_validation->set_rules('start_date', 'Tanggal Mulai Kegiatan', 'required|trim');
 		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('major_id', 'Program Keahlian', 'required|trim');
 		$this->form_validation->set_rules('tapel_id', 'Tahun Pelajaran', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/header', $header);
 			$this->load->view('templates/sidebar');
 			$this->load->view('templates/navbar');
-			$this->load->view('admin/add_kegiatan', $data);
+			$this->load->view('kaprog/add_kegiatan', $data);
 			$this->load->view('templates/footer');
 		} else {
 			$this->_addkegiatan();
@@ -75,7 +74,7 @@ class Admin extends CI_Controller
 		$event_name = $this->input->post('event_name');
 		$start_date = $this->input->post('start_date');
 		$finish_date = $this->input->post('finish_date');
-		$major_id = $this->input->post('major_id');
+		$major_id = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'))->major_id;
 		$tapel_id = $this->input->post('tapel_id');
 		$email = $this->session->userdata('email');
 		$user_id = $this->db->get_where('users', ['email' => $email])->row()->user_id;
@@ -107,7 +106,7 @@ class Admin extends CI_Controller
 			$this->db->insert('events', $data);
 			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil ditambahkan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		  </div>');
-			redirect(base_url('admin/kegiatan'));
+			redirect(base_url('kaprog/kegiatan'));
 		} else {
 			redirect(base_url());
 		}
@@ -118,7 +117,7 @@ class Admin extends CI_Controller
 		$this->load->model('Kegiatan_model');
 		$this->load->model('Program_model');
 		$this->load->model('Tapel_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -130,13 +129,12 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('event_name', 'Nama Kegiatan', 'required|trim');
 		$this->form_validation->set_rules('start_date', 'Tanggal Mulai Kegiatan', 'required|trim');
 		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('major_id', 'Program Keahlian', 'required|trim');
 		$this->form_validation->set_rules('tapel_id', 'Tahun Pelajaran', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/header', $header);
 			$this->load->view('templates/sidebar');
 			$this->load->view('templates/navbar');
-			$this->load->view('admin/edit_kegiatan', $data);
+			$this->load->view('kaprog/edit_kegiatan', $data);
 			$this->load->view('templates/footer');
 		} else {
 			$this->_editkegiatan($eventID);
@@ -148,7 +146,6 @@ class Admin extends CI_Controller
 		$event_name = $this->input->post('event_name');
 		$start_date = $this->input->post('start_date');
 		$finish_date = $this->input->post('finish_date');
-		$major_id = $this->input->post('major_id');
 		$tapel_id = $this->input->post('tapel_id');
 		$email = $this->session->userdata('email');
 		$olddocument = $this->Kegiatan_model->getThisEvent($eventID)->document;
@@ -170,7 +167,6 @@ class Admin extends CI_Controller
 				'event_name' => $event_name,
 				'start_date' => $start_date,
 				'finish_date' => $finish_date,
-				'major_id' => $major_id,
 				'tapel_id' => $tapel_id,
 				'user_id' => $user_id,
 				'document' => $document,
@@ -180,7 +176,7 @@ class Admin extends CI_Controller
 			$this->db->update('events');
 			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil diubah<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		  </div>');
-			redirect(base_url('admin/kegiatan'));
+			redirect(base_url('kaprog/kegiatan'));
 		} else {
 			redirect(base_url());
 		}
@@ -189,7 +185,7 @@ class Admin extends CI_Controller
 	public function dudika()
 	{
 		$this->load->model('Dudika_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -206,7 +202,7 @@ class Admin extends CI_Controller
 	{
 		$this->load->model('Program_model');
 		$this->load->model('Tapel_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -277,7 +273,7 @@ class Admin extends CI_Controller
 		$this->load->model('Kegiatan_model');
 		$this->load->model('Program_model');
 		$this->load->model('Tapel_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -348,7 +344,7 @@ class Admin extends CI_Controller
 	public function kaprog()
 	{
 		$this->load->model('Kaprog_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -364,7 +360,7 @@ class Admin extends CI_Controller
 	public function kaprogadd()
 	{
 		$this->load->model('Program_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
@@ -441,7 +437,7 @@ class Admin extends CI_Controller
 	{
 		$this->load->model('Kaprog_model');
 		$this->load->model('Program_model');
-		$biodata = $this->Admin_model->getBioAdmin($this->session->userdata('email'));
+		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;

@@ -12,7 +12,7 @@ class Auth extends CI_Controller
 				redirect(base_url('admin'));
 			} else
 			if ($this->session->userdata('role_id') == 2) {
-				redirect(base_url('kakom'));
+				redirect(base_url('kaprog'));
 			} else
 			if ($this->session->userdata('role_id') == 3) {
 				redirect(base_url('pembimbing'));

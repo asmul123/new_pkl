@@ -2,7 +2,6 @@
 <div class="content-wrapper">
     <!-- Content -->
 
-    <?= $this->session->flashdata('pesan'); ?>
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Basic Layout -->
         <div class="row">
@@ -10,6 +9,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Tambah Kegiatan</h5>
+                        <?= $this->session->flashdata('pesan'); ?>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="<?= base_url('admin/kegiatanadd') ?>" enctype="multipart/form-data">

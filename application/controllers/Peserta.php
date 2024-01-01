@@ -19,7 +19,7 @@ class Peserta extends CI_Controller
 		$header['title'] = "Beranda Peserta";
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
-		$header['role'] = "Peserta";
+		$header['role'] = $biodata->role;
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
