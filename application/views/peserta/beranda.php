@@ -64,6 +64,19 @@
             </div>
             <div class="col-lg-12 col-md-12 order-1">
                 <div class="row">
+                    <div class="col-lg-12 col-md-12 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="<?= base_url('public') ?>/assets/img/icons/unicons/bell.svg" alt="chart success" class="rounded" width="100px" />
+                                <hr>
+                                <small class="text-success fw-semibold">Saatnya Masuk Kantor</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 order-1">
+                <div class="row">
                     <div class="col-lg-6 col-md-12 col-6 mb-4">
                         <div class="card">
                             <div class="card-body">
@@ -74,7 +87,7 @@
                                 </div>
                                 <span>07:00:00</span>
                                 <h6 class="card-title mb-2 mt-2">Masuk Kantor</h6>
-                                <small class="text-success fw-semibold"><i class="bx bx-right-arrow-alt"></i> 07:00:20</small>
+                                <small class="text-success fw-semibold"><i class="bx bx-right-arrow-alt"></i> 00:00:00</small>
                             </div>
                         </div>
                     </div>
@@ -88,29 +101,7 @@
                                 </div>
                                 <span>16:00:00</span>
                                 <h6 class="card-title mb-2 mt-2">Pulang Kantor</h6>
-                                <small class="text-success fw-semibold"><i class="bx bx-left-arrow-alt"></i>16:30:00</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12 order-1">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <img src="<?= base_url('public') ?>/assets/img/icons/unicons/bell.svg" alt="chart success" class="rounded" width="100px" />
-                                <hr>
-                                <small class="text-success fw-semibold">Masuk Kantor</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <img src="<?= base_url('public') ?>/assets/img/icons/unicons/bell.svg" alt="chart success" class="rounded" width="100px" />
-                                <hr>
-                                <small class="text-success fw-semibold">Pulang Kantor</small>
+                                <small class="text-success fw-semibold"><i class="bx bx-left-arrow-alt"></i>00:00:00</small>
                             </div>
                         </div>
                     </div>

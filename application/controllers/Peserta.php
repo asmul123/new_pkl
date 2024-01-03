@@ -16,10 +16,11 @@ class Peserta extends CI_Controller
 	public function index()
 	{
 		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
-		$header['title'] = "Beranda Peserta";
+		$header['title'] = "Beranda Peserta - Jurnal PKL Online SMKN 1 Garut";
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
+		$header['menuactive'] = "dashboard";
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');

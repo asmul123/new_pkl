@@ -16,7 +16,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Nama Kaprog</label>
                                 <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="bx bx-run"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-user"></i></span>
                                     <input type="text" name="name" class="form-control" placeholder="Nama Kaprog" autofocus />
                                 </div>
                             </div>

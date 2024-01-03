@@ -55,7 +55,13 @@
 
     <link rel="stylesheet" href="<?= base_url('public') ?>/assets/vendor/libs/apex-charts/apex-charts.css" />
 
-    <!-- Page CSS -->
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.8/datatables.min.js"></script>
+    
+    <link href="<?= base_url(); ?>public/assets/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <!--  CSS -->
 
     <!-- Helpers -->
     <script src="<?= base_url('public') ?>/assets/vendor/js/helpers.js"></script>

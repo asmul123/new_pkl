@@ -54,6 +54,28 @@
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- Datatable -->
+<!-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    new DataTable('#datatable', {
+        responsive: true
+    });
+</script> -->
+
+<script>
+    new DataTable('#example', {
+        ordering: false
+    });
+</script>
+
+<script src="<?= base_url(); ?>public/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="<?= base_url(); ?>public/js/plugins-init/datatables.init.js"></script>
+
 </body>
 
 </html>

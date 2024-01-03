@@ -20,6 +20,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Beranda Admin - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "dashboard";
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
@@ -35,6 +36,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Daftar Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "kegiatan";
 		$data['kegiatan'] = $this->Kegiatan_model->getEvents();
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
@@ -52,6 +54,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Tambah Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "kegiatan";
 		$data['program'] = $this->Program_model->getMajors();
 		$data['tapel'] = $this->Tapel_model->getTapels();
 		$this->form_validation->set_rules('event_name', 'Nama Kegiatan', 'required|trim');
@@ -123,6 +126,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Edit Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "kegiatan";
 		$data['kegiatan'] = $this->Kegiatan_model->getThisEvent($eventID);
 		$data['program'] = $this->Program_model->getMajors();
 		$data['tapel'] = $this->Tapel_model->getTapels();
@@ -194,6 +198,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Daftar Dudika - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "dudika";
 		$data['dudika'] = $this->Dudika_model->getDudikas();
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
@@ -211,6 +216,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Tambah Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "dudika";
 		$data['program'] = $this->Program_model->getMajors();
 		$data['tapel'] = $this->Tapel_model->getTapels();
 		$this->form_validation->set_rules('event_name', 'Nama Kegiatan', 'required|trim');
@@ -282,6 +288,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Edit Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "dudika";
 		$data['kegiatan'] = $this->Kegiatan_model->getThisEvent($eventID);
 		$data['program'] = $this->Program_model->getMajors();
 		$data['tapel'] = $this->Tapel_model->getTapels();
@@ -353,6 +360,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Daftar Kaprog - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "kaprog";
 		$data['kaprog'] = $this->Kaprog_model->getKaprogs();
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
@@ -369,6 +377,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Tambah Kaprog - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "kaprog";
 		$data['program'] = $this->Program_model->getMajors();
 		$this->form_validation->set_rules('name', 'Nama Kaprog', 'required|trim');
 		$this->form_validation->set_rules('nid', 'NIP/NIK Kaprog', 'required|trim');
@@ -446,6 +455,7 @@ class Admin extends CI_Controller
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Edit Kaprog - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "kaprog";
 		$data['kaprog'] = $this->Kaprog_model->getThisKaprog($kaprogID);
 		$data['program'] = $this->Program_model->getMajors();
 		$data['kaprogID'] = $kaprogID;
@@ -471,7 +481,6 @@ class Admin extends CI_Controller
 		$name = $this->input->post('name');
 		$nid = $this->input->post('nid');
 		$position = $this->input->post('position');
-		$major_id = $this->input->post('major_id');
 		$major_id = $this->input->post('major_id');
 		$email = $this->input->post('email');
 		$password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
