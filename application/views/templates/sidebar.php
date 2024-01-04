@@ -122,6 +122,27 @@
                         </li>
                         <!-- Akhir Menu Kaprog -->
                     <?php
+                    } else if ($this->session->userdata('role_id') == 3) {
+                    ?>
+                        <!-- Menu Pembimbing -->
+                        <li class="menu-item<?php if ($menuactive == "instruktur") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('pembimbing/instruktur') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Instruktur</div>
+                            </a>
+                        </li>
+                        <li class="menu-item<?php if ($menuactive == "peserta") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('pembimbing/peserta') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Peserta</div>
+                            </a>
+                        </li>
+                        <!-- Akhir Menu Pembimbing -->
+                    <?php
                     } else if ($this->session->userdata('role_id') == 5) {
                     ?>
                         <!-- Menu Peserta -->

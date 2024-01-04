@@ -1,415 +1,102 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
-
-class Kaprog extends CI_Controller
+class Pembimbing extends CI_Controller
 {
 
 	public function __construct()
 	{
 		parent::__construct();
-		if (!$this->session->userdata('email') or $this->session->userdata('role_id') != 2) {
+		if (!$this->session->userdata('email') or $this->session->userdata('role_id') != 3) {
 			redirect(base_url('auth'));
 		}
-		$this->load->model('Kaprog_model');
+		$this->load->model('Mentor_model');
 	}
 
 	public function index()
 	{
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
+		$biodata = $this->Mentor_model->getBioMentor($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
-		$header['title'] = "Beranda Kaprog - Jurnal PKL Online SMKN 1 GARUT";
+		$header['title'] = "Beranda Pembimbing - Jurnal PKL Online SMKN 1 GARUT";
 		$header['menuactive'] = "dashboard";
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
-		$this->load->view('kaprog/beranda');
+		$this->load->view('pembimbing/beranda');
 		$this->load->view('templates/footer');
-		// $this->load->view('datatable');
 	}
 
-	public function kegiatan()
+	public function instruktur()
 	{
-		$this->load->model('Kegiatan_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
+		$this->load->model('Instruktur_model');
+		$biodata = $this->Mentor_model->getBioMentor($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
-		$header['title'] = "Daftar Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
-		$data['kegiatan'] = $this->Kegiatan_model->getEventMajors($biodata->major_id);
-		$header['menuactive'] = "kegiatan";
+		$header['title'] = "Daftar Instruktur - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "instruktur";
+		$data['instruktur'] = $this->Instruktur_model->getInstrukturMentors($biodata->mentor_id);
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
-		$this->load->view('kaprog/kegiatan', $data);
+		$this->load->view('pembimbing/instruktur', $data);
 		$this->load->view('templates/footer');
 	}
 
-	public function kegiatanadd()
-	{
-		$this->load->model('Program_model');
-		$this->load->model('Tapel_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
-		$header['photo'] = $biodata->photo;
-		$header['name'] = $biodata->name;
-		$header['role'] = $biodata->role;
-		$header['title'] = "Tambah Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "kegiatan";
-		$data['program'] = $this->Program_model->getMajors();
-		$data['tapel'] = $this->Tapel_model->getTapels();
-		$this->form_validation->set_rules('event_name', 'Nama Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('start_date', 'Tanggal Mulai Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('tapel_id', 'Tahun Pelajaran', 'required|trim');
-		if ($this->form_validation->run() == false) {
-			$this->load->view('templates/header', $header);
-			$this->load->view('templates/sidebar');
-			$this->load->view('templates/navbar');
-			$this->load->view('kaprog/add_kegiatan', $data);
-			$this->load->view('templates/footer');
-		} else {
-			$this->_addkegiatan();
-		}
-	}
-
-	private function _addkegiatan()
-	{
-		$event_name = $this->input->post('event_name');
-		$start_date = $this->input->post('start_date');
-		$finish_date = $this->input->post('finish_date');
-		$major_id = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'))->major_id;
-		$tapel_id = $this->input->post('tapel_id');
-		$email = $this->session->userdata('email');
-		$user_id = $this->db->get_where('users', ['email' => $email])->row()->user_id;
-		$config['upload_path']          = './public/assets/documents/';
-		$config['allowed_types']        = 'pdf';
-		$config['overwrite'] = TRUE;
-		$config['remove_spaces'] = TRUE;
-		$config['encrypt_name'] = TRUE;
-		$this->upload->initialize($config);
-		if (!$this->upload->do_upload('document')) {
-			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">'
-				. $this->upload->display_errors() .
-				'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			$document = "";
-		} else {
-			$document = $this->upload->data('file_name');
-		}
-		if ($user_id) {
-			$data = [
-				'event_name' => $event_name,
-				'start_date' => $start_date,
-				'finish_date' => $finish_date,
-				'major_id' => $major_id,
-				'tapel_id' => $tapel_id,
-				'user_id' => $user_id,
-				'document' => $document,
-			];
-			$this->db->insert('events', $data);
-			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil ditambahkan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			redirect(base_url('kaprog/kegiatan'));
-		} else {
-			redirect(base_url());
-		}
-	}
-
-	public function kegiatanedit($eventID)
-	{
-		$this->load->model('Kegiatan_model');
-		$this->load->model('Program_model');
-		$this->load->model('Tapel_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
-		$header['photo'] = $biodata->photo;
-		$header['name'] = $biodata->name;
-		$header['role'] = $biodata->role;
-		$header['title'] = "Edit Kegiatan - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "kegiatan";
-		$data['kegiatan'] = $this->Kegiatan_model->getThisEvent($eventID);
-		$data['program'] = $this->Program_model->getMajors();
-		$data['tapel'] = $this->Tapel_model->getTapels();
-		$data['eventID'] = $eventID;
-		$this->form_validation->set_rules('event_name', 'Nama Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('start_date', 'Tanggal Mulai Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir Kegiatan', 'required|trim');
-		$this->form_validation->set_rules('tapel_id', 'Tahun Pelajaran', 'required|trim');
-		if ($this->form_validation->run() == false) {
-			$this->load->view('templates/header', $header);
-			$this->load->view('templates/sidebar');
-			$this->load->view('templates/navbar');
-			$this->load->view('kaprog/edit_kegiatan', $data);
-			$this->load->view('templates/footer');
-		} else {
-			$this->_editkegiatan($eventID);
-		}
-	}
-
-	private function _editkegiatan($eventID)
-	{
-		$event_name = $this->input->post('event_name');
-		$start_date = $this->input->post('start_date');
-		$finish_date = $this->input->post('finish_date');
-		$tapel_id = $this->input->post('tapel_id');
-		$email = $this->session->userdata('email');
-		$olddocument = $this->Kegiatan_model->getThisEvent($eventID)->document;
-		$user_id = $this->db->get_where('users', ['email' => $email])->row()->user_id;
-		$config['upload_path']          = './public/assets/documents/';
-		$config['allowed_types']        = 'pdf';
-		$config['overwrite'] = TRUE;
-		$config['remove_spaces'] = TRUE;
-		$config['encrypt_name'] = TRUE;
-		$this->upload->initialize($config);
-		if (!$this->upload->do_upload('document')) {
-			$document = $olddocument;
-		} else {
-			$document = $this->upload->data('file_name');
-			unlink('./public/assets/documents/' . $olddocument);
-		}
-		if ($user_id) {
-			$data = [
-				'event_name' => $event_name,
-				'start_date' => $start_date,
-				'finish_date' => $finish_date,
-				'tapel_id' => $tapel_id,
-				'user_id' => $user_id,
-				'document' => $document,
-			];
-			$this->db->set($data);
-			$this->db->where('event_id', $eventID);
-			$this->db->update('events');
-			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil diubah<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			redirect(base_url('kaprog/kegiatan'));
-		} else {
-			redirect(base_url());
-		}
-	}
-
-	public function dudika()
+	public function instrukturadd()
 	{
 		$this->load->model('Dudika_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
+		$biodata = $this->Mentor_model->getBioMentor($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
-		$header['title'] = "Daftar Dudika - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "dudika";
-		$data['dudika'] = $this->Dudika_model->getDudikaMajors($biodata->major_id);
-		$this->load->view('templates/header', $header);
-		$this->load->view('templates/sidebar');
-		$this->load->view('templates/navbar');
-		$this->load->view('kaprog/dudika', $data);
-		$this->load->view('templates/footer');
-	}
-
-	public function dudikaadd()
-	{
-		$this->load->model('Tapel_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
-		$header['photo'] = $biodata->photo;
-		$header['name'] = $biodata->name;
-		$header['role'] = $biodata->role;
-		$header['title'] = "Tambah Dudika - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "dudika";
-		$data['tapel'] = $this->Tapel_model->getTapels();
-		$this->form_validation->set_rules('name', 'Nama Dudika', 'required|trim');
-		$this->form_validation->set_rules('address', 'Alamat Dudika', 'required|trim');
-		$this->form_validation->set_rules('head', 'Pimpinan Dudika', 'required|trim');
-		$this->form_validation->set_rules('head_nip', 'NIP/NIK Pimpinan Dudika', 'required|trim');
-		$this->form_validation->set_rules('head_position', 'Jabatan Pimpinan Dudika', 'required|trim');
-		$this->form_validation->set_rules('tapel_id', 'Tahun Pelajaran', 'required|trim');
+		$header['title'] = "Tambah Instruktur - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "instruktur";
+		$data['dudika'] = $this->Dudika_model->getDudikaPloatings($biodata->mentor_id);
+		$this->form_validation->set_rules('name', 'Nama Instruktur', 'required|trim');
+		$this->form_validation->set_rules('nid', 'NIP/NIK Instruktur', 'required|trim');
+		$this->form_validation->set_rules('position', 'Jabatan Instruktur', 'required|trim');
+		$this->form_validation->set_rules('email', 'Email Instruktur', 'required|trim');
+		$this->form_validation->set_rules('dudika_id', 'Nama Dudika', 'required|trim');
+		$this->form_validation->set_rules('start_date', 'Tanggal Mulai PKL', 'required|trim');
+		$this->form_validation->set_rules('start_time', 'Waktu Mulai PKL', 'required|trim');
+		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir PKL', 'required|trim');
+		$this->form_validation->set_rules('finish_time', 'Waktu Akhir PKL', 'required|trim');
+		$this->form_validation->set_rules('ploating_id[]', 'Peserta PKL', 'required|trim');
+		$this->form_validation->set_rules('off_days[]', 'Hari Libur PKL', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/header', $header);
 			$this->load->view('templates/sidebar');
 			$this->load->view('templates/navbar');
-			$this->load->view('kaprog/add_dudika', $data);
+			$this->load->view('pembimbing/add_instruktur', $data);
 			$this->load->view('templates/footer');
 		} else {
-			$this->_adddudika();
+			$this->_addinstruktur();
 		}
 	}
 
-	private function _adddudika()
-	{
-		$name = $this->input->post('name');
-		$address = $this->input->post('address');
-		$head = $this->input->post('head');
-		$head_nip = $this->input->post('head_nip');
-		$head_position = $this->input->post('head_position');
-		$tapel_id = $this->input->post('tapel_id');
-		$email = $this->session->userdata('email');
-		$user_id = $this->db->get_where('users', ['email' => $email])->row()->user_id;
-		$major_id = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'))->major_id;
-		$config['upload_path']          = './public/assets/img/logos/';
-		$config['allowed_types']        = 'jpg|jpeg|png';
-		$config['overwrite'] = TRUE;
-		$config['remove_spaces'] = TRUE;
-		$config['encrypt_name'] = TRUE;
-		$this->upload->initialize($config);
-		if (!$this->upload->do_upload('logo')) {
-			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">'
-				. $this->upload->display_errors() .
-				'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			$logo = "no_image.png";
-		} else {
-			$logo = $this->upload->data('file_name');
-		}
-		if ($user_id) {
-			$data = [
-				'name' => $name,
-				'address' => $address,
-				'head' => $head,
-				'head_nip' => $head_nip,
-				'head_position' => $head_position,
-				'logo' => $logo,
-				'major_id' => $major_id,
-				'tapel_id' => $tapel_id,
-				'user_id' => $user_id
-			];
-			$this->db->insert('dudikas', $data);
-			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil ditambahkan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			redirect(base_url('kaprog/dudika'));
-		} else {
-			redirect(base_url());
-		}
-	}
-
-	public function dudikaedit($dudikaID)
-	{
-		$this->load->model('Dudika_model');
-		$this->load->model('Tapel_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
-		$header['photo'] = $biodata->photo;
-		$header['name'] = $biodata->name;
-		$header['role'] = $biodata->role;
-		$header['title'] = "Edit Dudika - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "dudika";
-		$data['dudika'] = $this->Dudika_model->getThisDudika($dudikaID);
-		$data['tapel'] = $this->Tapel_model->getTapels();
-		$data['dudikaID'] = $dudikaID;
-		$this->form_validation->set_rules('name', 'Nama Dudika', 'required|trim');
-		$this->form_validation->set_rules('address', 'Alamat Dudika', 'required|trim');
-		$this->form_validation->set_rules('head', 'Pimpinan Dudika', 'required|trim');
-		$this->form_validation->set_rules('head_nip', 'NIP/NIK Pimpinan Dudika', 'required|trim');
-		$this->form_validation->set_rules('head_position', 'Jabatan Pimpinan Dudika', 'required|trim');
-		$this->form_validation->set_rules('tapel_id', 'Tahun Pelajaran', 'required|trim');
-		if ($this->form_validation->run() == false) {
-			$this->load->view('templates/header', $header);
-			$this->load->view('templates/sidebar');
-			$this->load->view('templates/navbar');
-			$this->load->view('kaprog/edit_dudika', $data);
-			$this->load->view('templates/footer');
-		} else {
-			$this->_editdudika($dudikaID);
-		}
-	}
-
-	private function _editdudika($dudikaID)
-	{
-		$name = $this->input->post('name');
-		$address = $this->input->post('address');
-		$head = $this->input->post('head');
-		$head_nip = $this->input->post('head_nip');
-		$head_position = $this->input->post('head_position');
-		$tapel_id = $this->input->post('tapel_id');
-		$email = $this->session->userdata('email');
-		$oldlogo = $this->Dudika_model->getThisDudika($dudikaID)->logo;
-		$user_id = $this->db->get_where('users', ['email' => $email])->row()->user_id;
-		$config['upload_path']          = './public/assets/img/logos/';
-		$config['allowed_types']        = 'jpg|jpeg|png';
-		$config['overwrite'] = TRUE;
-		$config['remove_spaces'] = TRUE;
-		$config['encrypt_name'] = TRUE;
-		$this->upload->initialize($config);
-		if (!$this->upload->do_upload('logo')) {
-			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">'
-				. $this->upload->display_errors() .
-				'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			$logo = $oldlogo;
-		} else {
-			$logo = $this->upload->data('file_name');
-			if ($oldlogo != "no_image.png") {
-				unlink('./public/assets/img/logos/' . $oldlogo);
-			}
-		}
-		if ($user_id) {
-			$data = [
-				'name' => $name,
-				'address' => $address,
-				'head' => $head,
-				'head_nip' => $head_nip,
-				'head_position' => $head_position,
-				'logo' => $logo,
-				'tapel_id' => $tapel_id,
-				'user_id' => $user_id
-			];
-			$this->db->set($data);
-			$this->db->where('dudika_id', $dudikaID);
-			$this->db->update('dudikas');
-			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil diubah<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		  </div>');
-			redirect(base_url('kaprog/dudika'));
-		} else {
-			redirect(base_url());
-		}
-	}
-
-	public function mentor()
-	{
-		$this->load->model('Mentor_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
-		$header['photo'] = $biodata->photo;
-		$header['name'] = $biodata->name;
-		$header['role'] = $biodata->role;
-		$header['title'] = "Daftar Pembimbing - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "mentor";
-		$data['mentor'] = $this->Mentor_model->getMentorMajors($biodata->major_id);
-		$this->load->view('templates/header', $header);
-		$this->load->view('templates/sidebar');
-		$this->load->view('templates/navbar');
-		$this->load->view('kaprog/mentor', $data);
-		$this->load->view('templates/footer');
-	}
-
-	public function mentoradd()
-	{
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
-		$header['photo'] = $biodata->photo;
-		$header['name'] = $biodata->name;
-		$header['role'] = $biodata->role;
-		$header['title'] = "Tambah Pembimbing - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "mentor";
-		$this->form_validation->set_rules('name', 'Nama Pembimbing', 'required|trim');
-		$this->form_validation->set_rules('nid', 'NIP/NIK Pembimbing', 'required|trim');
-		$this->form_validation->set_rules('position', 'Jabatan Pembimbing', 'required|trim');
-		if ($this->form_validation->run() == false) {
-			$this->load->view('templates/header', $header);
-			$this->load->view('templates/sidebar');
-			$this->load->view('templates/navbar');
-			$this->load->view('kaprog/add_mentor');
-			$this->load->view('templates/footer');
-		} else {
-			$this->_addmentor();
-		}
-	}
-
-	private function _addmentor()
+	private function _addinstruktur()
 	{
 		$name = $this->input->post('name');
 		$nid = $this->input->post('nid');
 		$position = $this->input->post('position');
-		$major_id = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'))->major_id;
+		$dudika_id = $this->input->post('dudika_id');
 		$email = $this->input->post('email');
 		$password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+		$start_date = $this->input->post('start_date');
+		$start_time = $this->input->post('start_time');
+		$finish_date = $this->input->post('finish_date');
+		$finish_time = $this->input->post('finish_time');
+		$off_days = $this->input->post('off_days');
+		$count_off = count($off_days);
+		$offdays = "";
+		for ($j = 0; $j < $count_off; $j++) {
+			$offdays = $offdays . "#" . $off_days[$j];
+		}
+		$ploating_id = $this->input->post('ploating_id');
+		$count_ploat = count($ploating_id);
 		$cek_email = $this->db->get_where('users', ['email' => $email])->num_rows();
 		$config['upload_path']          = './public/assets/img/avatars/';
 		$config['allowed_types']        = 'jpg|jpeg|png';
@@ -430,7 +117,7 @@ class Kaprog extends CI_Controller
 			$data = [
 				'email' => $email,
 				'password' => $password,
-				'role_id' => 3
+				'role_id' => 4
 			];
 			$this->db->insert('users', $data);
 			$user_id = $this->db->get_where('users', ['email' => $email])->row()->user_id;
@@ -438,57 +125,72 @@ class Kaprog extends CI_Controller
 				'name' => $name,
 				'nid' => $nid,
 				'position' => $position,
-				'major_id' => $major_id,
+				'dudika_id' => $dudika_id,
 				'user_id' => $user_id,
 				'photo' => $photo
 			];
-			$this->db->insert('mentors', $data);
+			$this->db->insert('instrukturs', $data);
+			$instruktur_id = $this->db->get_where('instrukturs', ['user_id' => $user_id])->row()->instruktur_id;
+			for ($i = 0; $i < $count_ploat; $i++) {
+				$data = [
+					'start_date' => $start_date,
+					'start_time' => $start_time,
+					'finish_date' => $finish_date,
+					'finish_time' => $finish_time,
+					'off_days' => $offdays,
+					'instruktur_id' => $instruktur_id,
+				];
+				$this->db->set($data);
+				$this->db->where('ploating_id', $ploating_id[$i]);
+				$this->db->update('ploatings');
+			}
 			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil ditambahkan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>');
-			redirect(base_url('kaprog/mentor'));
+			redirect(base_url('pembimbing/instruktur'));
 		} else {
 			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">Gagal Menambahkan! Email Sudah Ada<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>');
-			redirect(base_url('kaprog/mentoradd'));
+			redirect(base_url('pembimbing/instrukturadd'));
 		}
 	}
 
-	public function mentoredit($mentorID)
+	public function instrukturedit($instrukturID)
 	{
-		$this->load->model('Mentor_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
+		$this->load->model('Instruktur_model');
+		$biodata = $this->Mentor_model->getBioMentor($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
-		$header['title'] = "Edit Pembimbing - Jurnal PKL Online SMKN 1 GARUT";
-		$header['menuactive'] = "mentor";
-		$data['mentor'] = $this->Mentor_model->getThisMentor($mentorID);
-		$data['mentorID'] = $mentorID;
-		$this->form_validation->set_rules('name', 'Nama Pembimbing', 'required|trim');
-		$this->form_validation->set_rules('nid', 'NIP/NIK Pembimbing', 'required|trim');
-		$this->form_validation->set_rules('position', 'Jabatan Pembimbing', 'required|trim');
+		$header['title'] = "Edit Instruktur - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "instruktur";
+		$data['instruktur'] = $this->Instruktur_model->getThisInstruktur($instrukturID);
+		$data['instrukturID'] = $instrukturID;
+		$this->form_validation->set_rules('name', 'Nama Instruktur', 'required|trim');
+		$this->form_validation->set_rules('nid', 'NIP/NIK Instruktur', 'required|trim');
+		$this->form_validation->set_rules('position', 'Jabatan Instruktur', 'required|trim');
+		$this->form_validation->set_rules('email', 'Email Instruktur', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$this->load->view('templates/header', $header);
 			$this->load->view('templates/sidebar');
 			$this->load->view('templates/navbar');
-			$this->load->view('kaprog/edit_mentor', $data);
+			$this->load->view('pembimbing/edit_instruktur', $data);
 			$this->load->view('templates/footer');
 		} else {
-			$this->_editmentor($mentorID);
+			$this->_editinstruktur($instrukturID);
 		}
 	}
 
-	private function _editmentor($mentorID)
+	private function _editinstruktur($instrukturID)
 	{
-		$this->load->model('Mentor_model');
-		$mentor = $this->Mentor_model->getThisMentor($mentorID);
+		$this->load->model('Instruktur_model');
+		$instruktur = $this->Instruktur_model->getThisInstruktur($instrukturID);
 		$name = $this->input->post('name');
 		$nid = $this->input->post('nid');
 		$position = $this->input->post('position');
 		$email = $this->input->post('email');
 		$password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
-		$user_id = $mentor->user_id;
-		$oldphoto = $mentor->photo;
+		$user_id = $instruktur->user_id;
+		$oldphoto = $instruktur->photo;
 		$cek_email = $this->db->get_where('users', ['email' => $email, 'user_id !=' => $user_id])->num_rows();
 		$config['upload_path']          = './public/assets/img/avatars/';
 		$config['allowed_types']        = 'jpg|jpeg|png';
@@ -530,32 +232,48 @@ class Kaprog extends CI_Controller
 				'photo' => $photo
 			];
 			$this->db->set($data);
-			$this->db->where('mentor_id', $mentorID);
-			$this->db->update('mentors');
+			$this->db->where('instruktur_id', $instrukturID);
+			$this->db->update('instrukturs');
 			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil diubah<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>');
-			redirect(base_url('kaprog/mentor'));
+			redirect(base_url('pembimbing/instruktur'));
 		} else {
 			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">Gagal Menambahkan! Email Sudah Ada<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>');
-			redirect(base_url('kaprog/mentoradd'));
+			redirect(base_url('pembimbing/instrukturadd'));
 		}
+	}
+
+	function getploating()
+	{
+		$this->load->model('Ploating_model');
+		$dudika_id = $this->input->post('id', TRUE);
+		$data = $this->Ploating_model->getPloatingDudika($dudika_id);
+		echo json_encode($data);
+	}
+
+	function getdate()
+	{
+		$this->load->model('Ploating_model');
+		$dudika_id = $this->input->post('id', TRUE);
+		$data2 = $this->Ploating_model->getEventDudika($dudika_id);
+		echo json_encode($data2);
 	}
 
 	public function peserta()
 	{
 		$this->load->model('Peserta_model');
-		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
+		$biodata = $this->Mentor_model->getBioMentor($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Daftar Peserta - Jurnal PKL Online SMKN 1 GARUT";
 		$header['menuactive'] = "peserta";
-		$data['peserta'] = $this->Peserta_model->getPesertaMajors($biodata->major_id);
+		$data['peserta'] = $this->Peserta_model->getPesertaPloatings($biodata->mentor_id);
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
-		$this->load->view('kaprog/peserta', $data);
+		$this->load->view('pembimbing/peserta', $data);
 		$this->load->view('templates/footer');
 	}
 

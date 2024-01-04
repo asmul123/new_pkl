@@ -21,6 +21,16 @@ class Dudika_model extends CI_model
         return $this->db->get()->result();
     }
 
+    public function getDudikaPloatings($mentor_id)
+    {
+        $this->db->select('*');
+        $this->db->from('dudikas');
+        $this->db->join('ploatings', 'ploatings.dudika_id = dudikas.dudika_id');
+        $this->db->where('mentor_id', $mentor_id);
+        $this->db->group_by('ploatings.dudika_id');
+        return $this->db->get()->result();
+    }
+
     public function getThisDudika($dudikaID)
     {
         $this->db->select('*');

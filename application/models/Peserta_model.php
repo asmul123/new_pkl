@@ -28,6 +28,21 @@ class Peserta_model extends CI_model
         return $this->db->get()->result();
     }
 
+    public function getPesertaPloatings($mentor_id)
+    {
+        $this->db->select('*, partisipants.name as peserta, dudikas.name as dudika, instrukturs.name as instruktur, ploatings.start_date as sd, ploatings.finish_date as fd, ploatings.start_time as st, ploatings.finish_time as ft');
+        $this->db->from('ploatings');
+        $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
+        $this->db->join('dudikas', 'dudikas.dudika_id = ploatings.dudika_id');
+        $this->db->join('instrukturs', 'instrukturs.instruktur_id = ploatings.instruktur_id');
+        $this->db->join('tapels', 'tapels.tapel_id = partisipants.tapel_id');
+        $this->db->where('ploatings.mentor_id', $mentor_id);
+        $this->db->order_by('partisipants.tapel_id', 'DESC');
+        $this->db->order_by('ploatings.dudika_id', 'DESC');
+        $this->db->order_by('ploatings.mentor_id', 'DESC');
+        return $this->db->get()->result();
+    }
+
     public function getThisPeserta($partisipant_id)
     {
         $this->db->select('*');

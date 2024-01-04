@@ -8,19 +8,21 @@
             <div class="col-xl">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Tambah Peserta</h5>
+                        <h5 class="mb-0">Edit Peserta</h5>
                         <?= $this->session->flashdata('pesan'); ?>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="<?= base_url('kaprog/ploatingadd') ?>" enctype="multipart/form-data">
+                        <form method="POST" action="<?= base_url('kaprog/ploatingedit/' . $ploatingID) ?>">
                             <div class="mb-3">
                                 <label class="form-label">Nama Kegiatan</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-run"></i></span>
                                     <select name="event_id" class="form-control" placeholder="Nama Kegiatan">
-                                        <option value="" selected>Pilih Kegiatan</option>
+                                        <option value="">Pilih Kegiatan</option>
                                         <?php foreach ($kegiatan as $k) {  ?>
-                                            <option value="<?= $k->event_id ?>"><?= $k->event_name ?></option>
+                                            <option value="<?= $k->event_id ?>" <?php if ($k->event_id == $ploating->event_id) {
+                                                                                    echo "selected";
+                                                                                } ?>><?= $k->event_name ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -32,9 +34,11 @@
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-user"></i></span>
                                     <select name="dudika_id" class="form-control" placeholder="Nama Dudika">
-                                        <option value="" selected>Pilih Dudika</option>
+                                        <option value="">Pilih Dudika</option>
                                         <?php foreach ($dudika as $d) {  ?>
-                                            <option value="<?= $d->dudika_id ?>"><?= $d->name ?></option>
+                                            <option value="<?= $d->dudika_id ?>" <?php if ($d->dudika_id == $ploating->dudika_id) {
+                                                                                        echo "selected";
+                                                                                    } ?>><?= $d->name ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -46,9 +50,11 @@
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-card"></i></span>
                                     <select name="mentor_id" class="form-control" placeholder="Nama Pembimbing">
-                                        <option value="" selected>Pilih Pembimbing</option>
+                                        <option value="">Pilih Pembimbing</option>
                                         <?php foreach ($mentor as $m) {  ?>
-                                            <option value="<?= $m->mentor_id ?>"><?= $m->name ?></option>
+                                            <option value="<?= $m->mentor_id ?>" <?php if ($m->mentor_id == $ploating->mentor_id) {
+                                                                                        echo "selected";
+                                                                                    } ?>><?= $m->name ?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -59,10 +65,12 @@
                                 <label class="form-label">Nama Peserta</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-card"></i></span>
-                                    <select name="partisipant_id[]" class="form-control" placeholder="Nama Peserta" multiple>
-                                        <option value="" selected>Pilih Peserta</option>
+                                    <select name="partisipant_id" class="form-control" placeholder="Nama Peserta">
+                                        <option value="">Pilih Peserta</option>
                                         <?php foreach ($peserta as $p) {  ?>
-                                            <option value="<?= $p->partisipant_id ?>"><?= $p->class . " | " . $p->name ?></option>
+                                            <option value="<?= $p->partisipant_id ?>" <?php if ($p->partisipant_id == $ploating->partisipant_id) {
+                                                                                            echo "selected";
+                                                                                        } ?>><?= $p->class . " | " . $p->name ?></option>
                                         <?php
                                         } ?>
                                     </select>
