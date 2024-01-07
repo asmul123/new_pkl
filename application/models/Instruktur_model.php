@@ -30,6 +30,7 @@ class Instruktur_model extends CI_model
         $this->db->join('ploatings', 'ploatings.dudika_id = instrukturs.dudika_id');
         $this->db->join('users', 'users.user_id = instrukturs.user_id');
         $this->db->where('mentor_id', $mentor_id);
+        $this->db->where('ploatings.instruktur_id !=', '');
         $this->db->group_by('ploatings.instruktur_id');
         return $this->db->get()->result();
     }

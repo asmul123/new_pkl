@@ -16,7 +16,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Nama dudika</label>
                                 <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="bx bx-card"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-buildings"></i></span>
                                     <input type="text" name="name" class="form-control" placeholder="Nama Dudika" autofocus />
                                 </div>
                             </div>

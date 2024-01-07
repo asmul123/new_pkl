@@ -18,6 +18,7 @@
                                 <th>NISN</th>
                                 <th>Kelas</th>
                                 <th>Tahun Pelajaran</th>
+                                <th>Status Penempatan</th>
                                 <th>
                                     <div class="btn-group">
                                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,6 +43,22 @@
                                     <td><?= $p->nisn ?></td>
                                     <td><?= $p->class ?></td>
                                     <td><?= $p->tapel ?></td>
+                                    <td>
+                                        <?php
+                                        $thisploating = $this->Ploating_model->getThisPloatingPeserta($p->partisipant_id);
+                                        if ($thisploating->num_rows() == 0) {
+                                        ?>
+                                            <button class="btn btn-danger">Belum</button>
+                                        <?php
+                                        } else {
+                                            echo "<ul>";
+                                            foreach ($thisploating->result() as $tp) {
+                                                echo "<li>" . $tp->name . "</li>";
+                                            }
+                                            echo "</ul>";
+                                        }
+                                        ?>
+                                    </td>
                                     <td>
                                         <div class="dropdown">
                                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">

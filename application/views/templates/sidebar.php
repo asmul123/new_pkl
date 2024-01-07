@@ -146,6 +146,14 @@
                     } else if ($this->session->userdata('role_id') == 5) {
                     ?>
                         <!-- Menu Peserta -->
+                        <li class="menu-item<?php if ($menuactive == "biodata") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('peserta/biodata') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Biodata</div>
+                            </a>
+                        </li>
                         <li class="menu-item<?php if ($menuactive == "presensi") {
                                                 echo " active";
                                             } ?>">
@@ -160,14 +168,6 @@
                             <a href="<?= base_url('peserta/jurnal') ?>" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-notepad"></i>
                                 <div data-i18n="Analytics">Jurnal</div>
-                            </a>
-                        </li>
-                        <li class="menu-item<?php if ($menuactive == "biodata") {
-                                                echo " active";
-                                            } ?>">
-                            <a href="<?= base_url('peserta/biodata') ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-user"></i>
-                                <div data-i18n="Analytics">Biodata</div>
                             </a>
                         </li>
                         <li class="menu-item<?php if ($menuactive == "dudika") {

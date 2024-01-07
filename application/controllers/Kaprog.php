@@ -545,6 +545,7 @@ class Kaprog extends CI_Controller
 	public function peserta()
 	{
 		$this->load->model('Peserta_model');
+		$this->load->model('Ploating_model');
 		$biodata = $this->Kaprog_model->getBioKaprog($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;

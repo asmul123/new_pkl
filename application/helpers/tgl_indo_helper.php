@@ -174,25 +174,25 @@ if (!function_exists('nomor_hari')) {
     function nomor_hari($day)
     {
         switch ($day) {
-            case 0:
+            case 1:
                 return "Minggu";
                 break;
-            case 1:
+            case 2:
                 return "Senin";
                 break;
-            case 2:
+            case 3:
                 return "Selasa";
                 break;
-            case 3:
+            case 4:
                 return "Rabu";
                 break;
-            case 4:
+            case 5:
                 return "Kamis";
                 break;
-            case 5:
+            case 6:
                 return "Jumat";
                 break;
-            case 6:
+            case 7:
                 return "Sabtu";
                 break;
         }

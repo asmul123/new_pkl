@@ -32,7 +32,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Nama Dudika</label>
                                 <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="bx bx-user"></i></span>
+                                    <span class="input-group-text"><i class="bx bx-buildings"></i></span>
                                     <select name="dudika_id" class="form-control" placeholder="Nama Dudika">
                                         <option value="">Pilih Dudika</option>
                                         <?php foreach ($dudika as $d) {  ?>
