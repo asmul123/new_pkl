@@ -1,6 +1,8 @@
 .DS_Store
 
 application/cache/*
+application/config/database.php
+index.php
 !application/cache/index.html
 
 application/logs/*

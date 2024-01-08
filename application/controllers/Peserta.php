@@ -75,31 +75,38 @@ class Peserta extends CI_Controller
 
 	public function jurnal()
 	{
-		$this->load->model('Ploating_model');
-		$this->load->model('Scheme_model');
-		$this->load->model('Presensi_model');
+		$this->load->model('Jurnal_model');
 		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
 		$header['title'] = "Jurnal Peserta - Jurnal PKL Online SMKN 1 Garut";
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['menuactive'] = "jurnal";
-		$today = date('Y-m-d');
-		$partisipantploating = $this->Ploating_model->getPartisipantPloating($biodata->partisipant_id, $today);
-		$workingscheme = $this->Scheme_model->getWorkingScheme($partisipantploating->row()->ploating_id, $today);
-		$presencenow = $this->Presensi_model->getPresenceNow($partisipantploating->row()->ploating_id);
-		$data['day'] = date('w') + 1;
-		$data['jumlah_ploating'] = $partisipantploating->num_rows();
-		$data['ploating'] = $partisipantploating->row();
-		$data['jumlah_scheme'] = $workingscheme->num_rows();
-		$data['scheme'] = $workingscheme->row();
-		$data['jumlah_presensi'] = $presencenow->num_rows();
-		$data['presensi'] = $presencenow->row();
+		$data['jurnal'] = $this->Jurnal_model->getJurnalPartisipant($biodata->partisipant_id);
 
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
 		$this->load->view('peserta/jurnal', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function jurnaldetail($jurnal_id)
+	{
+		$this->load->model('Jurnal_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['title'] = "Jurnal Peserta - Jurnal PKL Online SMKN 1 Garut";
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['menuactive'] = "jurnal";
+		$data['jurnal_id'] = $jurnal_id;
+		$data['jurnaldetail'] = $this->Jurnal_model->getJurnalDetail($jurnal_id);
+
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/sidebar');
+		$this->load->view('templates/navbar');
+		$this->load->view('peserta/detail_jurnal', $data);
 		$this->load->view('templates/footer');
 	}
 
@@ -290,5 +297,89 @@ class Peserta extends CI_Controller
 		$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>');
 		redirect(base_url('peserta/biodata'));
+	}
+
+	public function jurnaladd()
+	{
+		$this->load->model('Ploating_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Tambah Jurnal - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "jurnal";
+		$data['biodata'] = $biodata;
+		$data['ploating'] = $this->Ploating_model->getAllPloatingPartisipant($biodata->partisipant_id);
+		$this->form_validation->set_rules('jurnal_date', 'Tanggal Jurnal', 'required|trim');
+		$this->form_validation->set_rules('division', 'Unit Kerja', 'required|trim');
+		$this->form_validation->set_rules('ploating_id', 'Nama Dudika', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->load->view('templates/header', $header);
+			$this->load->view('templates/sidebar');
+			$this->load->view('templates/navbar');
+			$this->load->view('peserta/add_jurnal', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$this->_addjurnal();
+		}
+	}
+
+	private function _addjurnal()
+	{
+		$jurnal_date = $this->input->post('jurnal_date');
+		$division = $this->input->post('division');
+		$ploating_id = $this->input->post('ploating_id');
+		$data = [
+			'ploating_id' => $ploating_id,
+			'jurnal_date' => $jurnal_date,
+			'division' => $division
+		];
+		$this->db->insert('jurnals', $data);
+		$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>');
+		redirect(base_url('peserta/jurnal'));
+	}
+
+	public function jurnaldetailadd($jurnal_id)
+	{
+		$this->load->model('Ploating_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Tambah Jurnal - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "jurnal";
+		$data['biodata'] = $biodata;
+		$data['jurnal_id'] = $jurnal_id;
+		$data['ploating'] = $this->Ploating_model->getAllPloatingPartisipant($biodata->partisipant_id);
+		$this->form_validation->set_rules('working_name', 'Nama Pekerjaan', 'required|trim');
+		$this->form_validation->set_rules('working_plan', 'Rencana Kegiatan', 'required|trim');
+		$this->form_validation->set_rules('working_goal', 'Hasil Pekerjaan', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->load->view('templates/header', $header);
+			$this->load->view('templates/sidebar');
+			$this->load->view('templates/navbar');
+			$this->load->view('peserta/add_jurnaldetail', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$this->_addjurnaldetail($jurnal_id);
+		}
+	}
+
+	private function _addjurnaldetail($jurnal_id)
+	{
+		$working_name = $this->input->post('working_name');
+		$working_plan = $this->input->post('working_plan');
+		$working_goal = $this->input->post('working_goal');
+		$data = [
+			'working_name' => $working_name,
+			'working_plan' => $working_plan,
+			'working_goal' => $working_goal,
+			'jurnal_id' => $jurnal_id
+		];
+		$this->db->insert('jurnal_details', $data);
+		$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>');
+		redirect(base_url('peserta/jurnaldetail/' . $jurnal_id));
 	}
 }

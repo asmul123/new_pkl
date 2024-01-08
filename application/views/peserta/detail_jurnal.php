@@ -6,25 +6,26 @@
 
     <div class="row">
       <div class="card">
-        <h5 class="card-header">Jurnal PKL</h5>
+        <h5 class="card-header">Detail Jurnal PKL</h5>
         <div class="card-body">
           <?= $this->session->flashdata('pesan'); ?>
-          <div class="table-responsive text-nowrap">
+          <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr class="text-nowrap">
                   <th>#</th>
-                  <th>Tanggal</th>
-                  <th>Dudika</th>
-                  <th>Unit Kerja/Pekerjaan</th>
-                  <th>Catatan</th>
+                  <th>Nama Pekerjaan</th>
+                  <th>Perencanaan Kegiatan</th>
+                  <th>Pelaksanaan Kegiatan</th>
+                  <th>Catatan Instruktur</th>
+                  <th>Keterangan</th>
                   <th>
                     <div class="btn-group">
                       <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Aksi
                       </a>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?= base_url('peserta/jurnaladd') ?>"><i class="bx bx-plus me-1"></i> Tambah</a></li>
+                        <li><a class="dropdown-item" href="<?= base_url('peserta/jurnaldetailadd/' . $jurnal_id) ?>"><i class="bx bx-plus me-1"></i> Tambah</a></li>
                       </ul>
                     </div>
                   </th>
@@ -41,22 +42,39 @@
                 $no = 0;
                 // foreach ($period as $dt) {
                 //   $date = $dt->format("Y-m-d");
-                foreach ($jurnal as $j) {
+                foreach ($jurnaldetail as $j) {
+                  $status = $j->status;
                 ?>
                   <tr>
                     <th scope="row"><?= ++$no ?></th>
-                    <td><?= date_indo($j->jurnal_date); ?></td>
-                    <td><?= $j->dudika ?></td>
-                    <td><?= $j->division ?></td>
-                    <td><a href="<?= base_url('peserta/jurnaldetail/' . $j->jurnal_id) ?>" class="btn btn-sm btn-primary">Lihat</a></td>
+                    <td><?= $j->working_name; ?></td>
+                    <td><?= $j->working_plan ?></td>
+                    <td><?= $j->working_goal ?></td>
+                    <td><?= $j->instruktur_noted ?></td>
+                    <td><?php
+                        if ($status == 1) {
+                        ?>
+                        <button class="btn btn-sm btn-success">Diterima</button>
+                      <?php
+                        } else if ($status == 2) {
+                      ?>
+                        <button class="btn btn-sm btn-danger">Ditolak</button>
+                      <?php
+                        } else {
+                      ?>
+                        <button class="btn btn-sm btn-warning">Belum diperiksa</button>
+                      <?php
+                        }
+                      ?>
+                    </td>
                     <td>
                       <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                           <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="<?= base_url('peserta/jurnaledit/' . $j->jurnal_id) ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                          <a class="dropdown-item" href="<?= base_url('peserta/jurnalhapus/' . $j->jurnal_id) ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="bx bx-trash me-1"></i> Hapus</a>
+                          <a class="dropdown-item" href="<?= base_url('peserta/jurnaldetailedit/' . $j->jurnal_detail_id) ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                          <a class="dropdown-item" href="<?= base_url('peserta/jurnaldetailhapus/' . $j->jurnal_detail_id) ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="bx bx-trash me-1"></i> Hapus</a>
                         </div>
                       </div>
                     </td>
@@ -65,6 +83,7 @@
               </tbody>
             </table>
           </div>
+          <a href="<?= base_url('peserta/jurnal') ?>" class="btn btn-sm btn-warning">Kembali</a>
         </div>
       </div>
     </div>
