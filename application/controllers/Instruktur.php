@@ -135,4 +135,89 @@ class Instruktur extends CI_Controller
 			}
 		}
 	}
+
+	public function biodata()
+	{
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Biodata Instruktur - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "biodata";
+		$data['biodata'] = $biodata;
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/sidebar');
+		$this->load->view('templates/navbar');
+		$this->load->view('instruktur/biodata', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function update()
+	{
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		if ($biodata) {
+			if (isset($_POST['image'])) {
+				$data = $_POST['image'];
+				$image_array_1 = explode(";", $data);
+				$image_array_2 = explode(",", $image_array_1[1]);
+				$data = base64_decode($image_array_2[1]);
+				$photo = 'i' . $biodata->instruktur_id . time() . '.png';
+				$image_name = './public/assets/img/avatars/' . $photo;
+				file_put_contents($image_name, $data);
+				if ($biodata->photo != "no_image.png") {
+					unlink('./public/assets/img/avatars/' . $biodata->photo);
+				}
+				$data_photo = [
+					'photo' => $photo
+				];
+				$this->db->set($data_photo);
+				$this->db->where('instruktur_id', $biodata->instruktur_id);
+				$this->db->update('instrukturs');
+				redirect(base_url('instruktur/biodata'));
+			} else {
+				$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gambar Harus di Upload</div>');
+				redirect(base_url('instruktur/biodata'));
+			}
+		} else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Silahkan login terlebih dahulu</div>');
+			redirect(base_url());
+		}
+	}
+
+	public function simpan()
+	{
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		if ($biodata) {
+			$name = $this->input->post('name');
+			$nid = $this->input->post('nid');
+			$position = $this->input->post('position');
+			$dudika = $this->input->post('dudika');
+			$address = $this->input->post('address');
+			$head = $this->input->post('head');
+			$head_nip = $this->input->post('head_nip');
+			$head_position = $this->input->post('head_position');
+			$data = [
+				'name' => $name,
+				'nid' => $nid,
+				'position' => $position
+			];
+			$this->db->set($data);
+			$this->db->where('instruktur_id', $biodata->instruktur_id);
+			$this->db->update('instrukturs');
+			$data2 = [
+				'name' => $dudika,
+				'address' => $address,
+				'head' => $head,
+				'head_nip' => $head_nip,
+				'head_position' => $head_position
+			];
+			$this->db->set($data2);
+			$this->db->where('dudika_id', $biodata->dudika_id);
+			$this->db->update('dudikas');
+			redirect(base_url('instruktur/biodata'));
+		} else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Data tidak ditemukan</div>');
+			redirect(base_url('instruktur/biodata'));
+		}
+	}
 }
