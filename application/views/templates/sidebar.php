@@ -141,6 +141,14 @@
                                 <div data-i18n="Analytics">Peserta</div>
                             </a>
                         </li>
+                        <li class="menu-item<?php if ($menuactive == "biodata") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('pembimbing/biodata') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Biodata</div>
+                            </a>
+                        </li>
                         <!-- Akhir Menu Pembimbing -->
                     <?php
                     } else if ($this->session->userdata('role_id') == 4) {

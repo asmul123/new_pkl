@@ -53,8 +53,8 @@
                                         <tr>
                                             <th scope="row"><?= ++$no ?></th>
                                             <td>
-                                                <a href="<?= base_url('instruktur/terimapresence/' . $p->presence_id) ?>" class="btn btn-sm btn-primary">Terima</a>
-                                                <a href="<?= base_url('instruktur/tolakpresence/' . $p->presence_id) ?>" class="btn btn-sm btn-danger">Tolak</a>
+                                                <a href="<?= base_url('pembimbing/terimapresence/' . $p->presence_id) ?>" class="btn btn-sm btn-primary">Terima</a>
+                                                <a href="<?= base_url('pembimbing/tolakpresence/' . $p->presence_id) ?>" class="btn btn-sm btn-danger">Tolak</a>
                                             </td>
                                             <td><?= $p->name ?></td>
                                             <td><?= longdate_indo($p->presence_date) ?></td>
@@ -95,7 +95,7 @@
                                         <tr>
                                             <th scope="row"><?= ++$no ?></th>
                                             <td>
-                                                <a href="<?= base_url('instruktur/jurnalproses/' . $j->jurnal_detail_id) ?>" class="btn btn-sm btn-primary">proses</a>
+                                                <a href="<?= base_url('pembimbing/jurnalproses/' . $j->jurnal_detail_id) ?>" class="btn btn-sm btn-primary">Proses</a>
                                             </td>
                                             <td><?= $j->name ?></td>
                                             <td><?= longdate_indo($j->jurnal_date) ?></td>
