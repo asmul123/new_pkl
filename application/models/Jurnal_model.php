@@ -52,4 +52,16 @@ class Jurnal_model extends CI_model
         $this->db->where('status', $status);
         return $this->db->get()->result();
     }
+
+    public function getJurnalThisMentor($mentorID, $status = null)
+    {
+        $this->db->select('*');
+        $this->db->from('jurnal_details');
+        $this->db->join('jurnals', 'jurnals.jurnal_id = jurnal_details.jurnal_id');
+        $this->db->join('ploatings', 'ploatings.ploating_id = jurnals.ploating_id');
+        $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
+        $this->db->where('mentor_id', $mentorID);
+        $this->db->where('status', $status);
+        return $this->db->get()->result();
+    }
 }

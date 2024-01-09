@@ -31,6 +31,17 @@ class Presensi_model extends CI_model
         return $this->db->get()->result();
     }
 
+    public function getPresenceThisMentor($mentorID, $status = null)
+    {
+        $this->db->select('*');
+        $this->db->from('presences');
+        $this->db->join('ploatings', 'ploatings.ploating_id = presences.ploating_id');
+        $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
+        $this->db->where('mentor_id', $mentorID);
+        $this->db->where('status', $status);
+        return $this->db->get()->result();
+    }
+
     public function cekPresensceInstruktur($instrukturID, $presenceID)
     {
         $this->db->select('*');

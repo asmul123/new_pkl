@@ -13,6 +13,15 @@ class Mentor_model extends CI_model
         return $this->db->get()->row();
     }
 
+    public function getPanduan($mentorID)
+    {
+        $this->db->select('document');
+        $this->db->from('ploatings');
+        $this->db->join('events', 'events.event_id = ploatings.event_id');
+        $this->db->where('mentor_id', $mentorID);
+        return $this->db->get()->row();
+    }
+
     public function getMentors()
     {
         $this->db->select('*');

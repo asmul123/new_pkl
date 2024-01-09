@@ -15,16 +15,21 @@ class Pembimbing extends CI_Controller
 
 	public function index()
 	{
+		$this->load->model('Presensi_model');
+		$this->load->model('Jurnal_model');
 		$biodata = $this->Mentor_model->getBioMentor($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
 		$header['role'] = $biodata->role;
 		$header['title'] = "Beranda Pembimbing - Jurnal PKL Online SMKN 1 GARUT";
 		$header['menuactive'] = "dashboard";
+		$data['panduan'] = $this->Mentor_model->getPanduan($biodata->mentor_id)->document;
+		$data['presensi'] = $this->Presensi_model->getPresenceThisMentor($biodata->mentor_id, '1');
+		$data['jurnal'] = $this->Jurnal_model->getJurnalThisMentor($biodata->mentor_id, '1');
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
-		$this->load->view('pembimbing/beranda');
+		$this->load->view('pembimbing/beranda', $data);
 		$this->load->view('templates/footer');
 	}
 

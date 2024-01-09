@@ -54,7 +54,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="<?= base_url('auth/setting') ?>">
                                 <i class="bx bx-cog me-2"></i>
                                 <span class="align-middle">Account Settings</span>
                             </a>

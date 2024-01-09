@@ -11,10 +11,10 @@
                             <div class="card-body">
                                 <h5 class="card-title text-primary">Selamat Datang <?= $name ?>! 🎉</h5>
                                 <p class="mb-4">
-                                    Sudahkah <span class="fw-bold">Anda</span> melakuan presensi hari ini. Jangan lupa untuk selalu mencatat kegiatan anda.
+                                    Berikut panduan pelaksanaan PKL Tahun ini.
                                 </p>
 
-                                <a href="<?= base_url('peserta/jurnal') ?>" class="btn btn-sm btn-outline-primary">Lihat Jurnal</a>
+                                <a href="<?= base_url('public/assets/documents/' . $panduan) ?>" class="btn btn-sm btn-outline-primary" target="_blank">Unduh Panduan</a>
                             </div>
                         </div>
                         <div class="col-sm-5 text-center text-sm-left">
@@ -25,152 +25,86 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-4 order-1">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-12 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="alert alert-info text-center" role="alert">
-                                    <div style="font-size: 48px;" id="jam"></div>
-                                    <?= date('l, d F Y'); ?>
-                                    <script type="text/javascript">
-                                        window.onload = function() {
-                                            jam();
-                                        }
-
-                                        function jam() {
-                                            var e = document.getElementById('jam'),
-                                                d = new Date(),
-                                                h, m, s;
-                                            h = d.getHours();
-                                            m = set(d.getMinutes());
-                                            s = set(d.getSeconds());
-
-                                            e.innerHTML = h + ':' + m + ':' + s;
-
-                                            setTimeout('jam()', 1000);
-                                        }
-
-                                        function set(e) {
-                                            e = e < 10 ? '0' + e : e;
-                                            return e;
-                                        }
-                                    </script>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12 order-1">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-12 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <img src="<?= base_url('public') ?>/assets/img/icons/unicons/bell.svg" alt="chart success" class="rounded" width="100px" />
-                                <hr>
-                                <small class="text-success fw-semibold">Saatnya Masuk Kantor</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12 order-1">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-start justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <img src="<?= base_url('public') ?>/assets/img/icons/unicons/chart-success.png" alt="chart success" class="rounded" />
-                                    </div>
-                                </div>
-                                <span>07:00:00</span>
-                                <h6 class="card-title mb-2 mt-2">Masuk Kantor</h6>
-                                <small class="text-success fw-semibold"><i class="bx bx-right-arrow-alt"></i> 00:00:00</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-start justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <img src="<?= base_url('public') ?>/assets/img/icons/unicons/chart.png" class="rounded" />
-                                    </div>
-                                </div>
-                                <span>16:00:00</span>
-                                <h6 class="card-title mb-2 mt-2">Pulang Kantor</h6>
-                                <small class="text-success fw-semibold"><i class="bx bx-left-arrow-alt"></i>00:00:00</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- Total Revenue -->
             <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
                 <div class="card">
-                    <div class="row row-bordered g-0">
-                        <div class="col-md-12">
-                            <h5 class="card-header m-0 me-2 pb-3">Kehadiran di Minggu ini</h5>
-                            <!-- Responsive Table -->
-                            <div class="table-responsive text-nowrap">
-                                <table class="table">
-                                    <thead>
-                                        <tr class="text-nowrap">
-                                            <th>#</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                            <th>Table heading</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                    <h5 class="card-header">Presensi Peserta PKL</h5>
+                    <div class="card-body">
+                        <?= $this->session->flashdata('pesan'); ?>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-borderless" id="example">
+                                <thead>
+                                    <tr class="text-nowrap">
+                                        <th>#</th>
+                                        <th>Aksi</th>
+                                        <th>Nama Peserta</th>
+                                        <th>Tanggal</th>
+                                        <th>Presensi Masuk</th>
+                                        <th>Photo Presensi Masuk</th>
+                                        <th>Presensi Pulang</th>
+                                        <th>Photo Presensi Pulang</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 0;
+                                    foreach ($presensi as $p) {
+                                    ?>
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
+                                            <th scope="row"><?= ++$no ?></th>
+                                            <td>
+                                                <a href="<?= base_url('instruktur/terimapresence/' . $p->presence_id) ?>" class="btn btn-sm btn-primary">Terima</a>
+                                                <a href="<?= base_url('instruktur/tolakpresence/' . $p->presence_id) ?>" class="btn btn-sm btn-danger">Tolak</a>
+                                            </td>
+                                            <td><?= $p->name ?></td>
+                                            <td><?= longdate_indo($p->presence_date) ?></td>
+                                            <td><?= $p->started_time ?></td>
+                                            <td><img src='<?= base_url('public/assets/img/presences/' . $p->started_photo) ?>' width='100px' /></td>
+                                            <td><?= $p->finished_time ?></td>
+                                            <td><img src='<?= base_url('public/assets/img/presences/' . $p->finished_photo) ?>' width='100px' /></td>
                                         </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+                <div class="card">
+                    <h5 class="card-header">Jurnal Peserta PKL</h5>
+                    <div class="card-body">
+                        <?= $this->session->flashdata('pesan'); ?>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-borderless" id="example2">
+                                <thead>
+                                    <tr class="text-nowrap">
+                                        <th>#</th>
+                                        <th>Aksi</th>
+                                        <th>Nama Peserta</th>
+                                        <th>Tanggal</th>
+                                        <th>Unit Kerja</th>
+                                        <th>Nama Pekerjaan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 0;
+                                    foreach ($jurnal as $j) {
+                                    ?>
                                         <tr>
-                                            <th scope="row">2</th>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
+                                            <th scope="row"><?= ++$no ?></th>
+                                            <td>
+                                                <a href="<?= base_url('instruktur/jurnalproses/' . $j->jurnal_detail_id) ?>" class="btn btn-sm btn-primary">proses</a>
+                                            </td>
+                                            <td><?= $j->name ?></td>
+                                            <td><?= longdate_indo($j->jurnal_date) ?></td>
+                                            <td><?= $j->division ?></td>
+                                            <td><?= $j->working_name ?></td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <!--/ Responsive Table -->
-                            </div>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
