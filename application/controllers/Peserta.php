@@ -218,8 +218,6 @@ class Peserta extends CI_Controller
 		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
 		if ($biodata) {
 			$name = $this->input->post('name');
-			$nis = $this->input->post('nis');
-			$nisn = $this->input->post('nisn');
 			$birth_place = $this->input->post('birth_place');
 			$birth_date = $this->input->post('birth_date');
 			$gender = $this->input->post('gender');
@@ -231,8 +229,6 @@ class Peserta extends CI_Controller
 			$parent_contact = $this->input->post('parent_contact');
 			$data = [
 				'name' => $name,
-				'nis' => $nis,
-				'nisn' => $nisn,
 				'birth_place' => $birth_place,
 				'birth_date' => $birth_date,
 				'gender' => $gender,
