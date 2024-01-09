@@ -28,7 +28,7 @@
             <!-- Total Revenue -->
             <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
                 <div class="card">
-                    <h5 class="card-header">Riwayat Peserta PKL</h5>
+                    <h5 class="card-header">Presensi Peserta PKL</h5>
                     <div class="card-body">
                         <?= $this->session->flashdata('pesan'); ?>
                         <div class="table-responsive text-nowrap">
@@ -62,6 +62,45 @@
                                             <td><img src='<?= base_url('public/assets/img/presences/' . $p->started_photo) ?>' width='100px' /></td>
                                             <td><?= $p->finished_time ?></td>
                                             <td><img src='<?= base_url('public/assets/img/presences/' . $p->finished_photo) ?>' width='100px' /></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+                <div class="card">
+                    <h5 class="card-header">Jurnal Peserta PKL</h5>
+                    <div class="card-body">
+                        <?= $this->session->flashdata('pesan'); ?>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-borderless" id="example2">
+                                <thead>
+                                    <tr class="text-nowrap">
+                                        <th>#</th>
+                                        <th>Aksi</th>
+                                        <th>Nama Peserta</th>
+                                        <th>Tanggal</th>
+                                        <th>Unit Kerja</th>
+                                        <th>Nama Pekerjaan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 0;
+                                    foreach ($jurnal as $j) {
+                                    ?>
+                                        <tr>
+                                            <th scope="row"><?= ++$no ?></th>
+                                            <td>
+                                                <a href="<?= base_url('instruktur/jurnalproses/' . $j->jurnal_detail_id) ?>" class="btn btn-sm btn-primary">proses</a>
+                                            </td>
+                                            <td><?= $j->name ?></td>
+                                            <td><?= longdate_indo($j->jurnal_date) ?></td>
+                                            <td><?= $j->division ?></td>
+                                            <td><?= $j->working_name ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

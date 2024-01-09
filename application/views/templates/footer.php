@@ -71,6 +71,9 @@
     new DataTable('#example', {
         ordering: false
     });
+    new DataTable('#example2', {
+        ordering: false
+    });
 </script>
 
 <script src="<?= base_url(); ?>public/vendor/datatables/js/jquery.dataTables.min.js"></script>

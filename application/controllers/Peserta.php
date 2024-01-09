@@ -375,6 +375,7 @@ class Peserta extends CI_Controller
 			'working_name' => $working_name,
 			'working_plan' => $working_plan,
 			'working_goal' => $working_goal,
+			'status' => '1',
 			'jurnal_id' => $jurnal_id
 		];
 		$this->db->insert('jurnal_details', $data);
