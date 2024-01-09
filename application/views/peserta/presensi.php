@@ -67,7 +67,12 @@
                     } else if ($presencethisdate->status == 2) {
                       $sk = "<button class='btn btn-sm btn-success'>Disetujui</button>";
                     } else if ($presencethisdate->status == 3) {
-                      $sk = "<button class='btn btn-sm btn-danger'>Ditolak</button>";
+                      $sk = "<button class='btn btn-sm btn-danger' 
+                      data-bs-toggle='tooltip'
+                      data-bs-offset='0,4'
+                      data-bs-placement='top'
+                      data-bs-html='true'
+                      title='<span>" . $presencethisdate->reason . "</span>'>Ditolak</button>";
                     }
                   } else {
                     $pm = "-";

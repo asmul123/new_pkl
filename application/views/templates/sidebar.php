@@ -143,6 +143,35 @@
                         </li>
                         <!-- Akhir Menu Pembimbing -->
                     <?php
+                    } else if ($this->session->userdata('role_id') == 4) {
+                    ?>
+                        <!-- Menu Pembimbing -->
+                        <li class="menu-item<?php if ($menuactive == "biodata") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('instruktur/biodata') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Biodata</div>
+                            </a>
+                        </li>
+                        <li class="menu-item<?php if ($menuactive == "presensi") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('instruktur/presensi') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-notepad"></i>
+                                <div data-i18n="Analytics">Presensi</div>
+                            </a>
+                        </li>
+                        <li class="menu-item<?php if ($menuactive == "jurnal") {
+                                                echo " active";
+                                            } ?>">
+                            <a href="<?= base_url('instruktur/jurnal') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-notepad"></i>
+                                <div data-i18n="Analytics">Jurnal</div>
+                            </a>
+                        </li>
+                        <!-- Akhir Menu Pembimbing -->
+                    <?php
                     } else if ($this->session->userdata('role_id') == 5) {
                     ?>
                         <!-- Menu Peserta -->

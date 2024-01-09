@@ -20,6 +20,28 @@ class Presensi_model extends CI_model
         return $this->db->get()->row();
     }
 
+    public function getPresenceThisInstruktur($instrukturID, $status = null)
+    {
+        $this->db->select('*');
+        $this->db->from('presences');
+        $this->db->join('ploatings', 'ploatings.ploating_id = presences.ploating_id');
+        $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
+        $this->db->where('instruktur_id', $instrukturID);
+        $this->db->where('status', $status);
+        return $this->db->get()->result();
+    }
+
+    public function cekPresensceInstruktur($instrukturID, $presenceID)
+    {
+        $this->db->select('*');
+        $this->db->from('presences');
+        $this->db->join('ploatings', 'ploatings.ploating_id = presences.ploating_id');
+        $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
+        $this->db->where('instruktur_id', $instrukturID);
+        $this->db->where('presence_id', $presenceID);
+        return $this->db->get()->num_rows();
+    }
+
     public function getAllPresenceType()
     {
         return $this->db->get('presences_type')->result_array();

@@ -4,12 +4,21 @@ class Instruktur_model extends CI_model
 {
     public function getBioInstruktur($email)
     {
-        $this->db->select('*');
+        $this->db->select('*, dudikas.name as dudika, instrukturs.name as name');
         $this->db->from('instrukturs');
         $this->db->join('users', 'users.user_id = instrukturs.user_id');
         $this->db->join('dudikas', 'dudikas.dudika_id = instrukturs.dudika_id');
         $this->db->join('roles', 'roles.role_id = users.role_id');
         $this->db->where('email', $email);
+        return $this->db->get()->row();
+    }
+
+    public function getPanduan($instrukturID)
+    {
+        $this->db->select('document');
+        $this->db->from('ploatings');
+        $this->db->join('events', 'events.event_id = ploatings.event_id');
+        $this->db->where('instruktur_id', $instrukturID);
         return $this->db->get()->row();
     }
 
