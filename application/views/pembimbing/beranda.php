@@ -61,7 +61,13 @@
                                             <td><?= $p->started_time ?></td>
                                             <td><img src='<?= base_url('public/assets/img/presences/' . $p->started_photo) ?>' width='100px' /></td>
                                             <td><?= $p->finished_time ?></td>
-                                            <td><img src='<?= base_url('public/assets/img/presences/' . $p->finished_photo) ?>' width='100px' /></td>
+                                            <td>
+                                                <?php if ($p->finished_time != "00:00:00") {
+                                                ?>
+                                                    <img src='<?= base_url('public/assets/img/presences/' . $p->finished_photo) ?>' width='100px' />
+                                                <?php
+                                                } ?>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

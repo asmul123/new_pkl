@@ -132,7 +132,18 @@ class Peserta extends CI_Controller
 	public function mulai($ploating_id)
 	{
 		$this->load->model('Presensi_model');
+		$this->load->model('Ploating_model');
+		$this->load->model('Scheme_model');
+		$today = date('Y-m-d');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
 		$presencenow = $this->Presensi_model->getPresenceNow($ploating_id)->row();
+		$ploating = $this->Ploating_model->getPartisipantPloating($biodata->partisipant_id, $today)->row();
+		$scheme = $this->Scheme_model->getWorkingScheme($partisipantploating->row()->ploating_id, $today)->row();
+		if ($scheme) {
+			$finish_time = $scheme->finish_time;
+		} else {
+			$finish_time = $ploating->finish_time;
+		}
 		if (!$presencenow) {
 			if (isset($_POST['image'])) {
 				$data = $_POST['image'];
@@ -155,7 +166,7 @@ class Peserta extends CI_Controller
 				$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gambar Harus di Upload</div>');
 				redirect(base_url());
 			}
-		} else {
+		} else if (date("H:i:s") >= $finish_time) {
 			if (isset($_POST['image'])) {
 				$data = $_POST['image'];
 				$image_array_1 = explode(";", $data);
@@ -178,6 +189,8 @@ class Peserta extends CI_Controller
 				$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gambar Harus di Upload</div>');
 				redirect(base_url());
 			}
+		} else {
+			redirect(base_url());
 		}
 	}
 
