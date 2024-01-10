@@ -24,8 +24,7 @@
                                 <th>Jam Masuk Kantor</th>
                                 <th>Jam Pulang Kantor</th>
                                 <th>Hari Libur</th>
-                                <th>Kehadiran</th>
-                                <th>Jurnal</th>
+                                <th>Detail</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -55,8 +54,7 @@
                                             ?>
                                         </ul>
                                     </td>
-                                    <td><a href="#" class="btn btn-xs btn-info">Lihat</a></td>
-                                    <td><a href="#" class="btn btn-xs btn-warning">Lihat</a></td>
+                                    <td><a href="<?= base_url('pembimbing/pesertadetail/' . $p->partisipant_id) ?>" class="btn btn-xs btn-info">Lihat</a></td>
                                     <td>
                                         <div class="dropdown">
                                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">

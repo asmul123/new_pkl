@@ -10,7 +10,7 @@
         <div class="card-body">
           <?= $this->session->flashdata('pesan'); ?>
           <div class="table-responsive text-nowrap">
-            <table class="table">
+            <table class="table table-borderless" id="example">
               <thead>
                 <tr class="text-nowrap">
                   <th>#</th>
@@ -27,6 +27,7 @@
                 $monday_this_week = date("Y-m-d", strtotime('monday this week'));
                 $begin = new DateTime($ploating->start_date);
                 $end = new DateTime(date('Y-m-d'));
+                $end->modify('+1 day');
 
                 $interval = DateInterval::createFromDateString('1 day');
                 $period = new DatePeriod($begin, $interval, $end);

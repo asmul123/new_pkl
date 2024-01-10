@@ -28,9 +28,22 @@ class Peserta_model extends CI_model
         return $this->db->get()->result();
     }
 
+    public function getPesertaInstrukturs($instruktur_id)
+    {
+        $this->db->select('*, partisipants.name as peserta, partisipants.photo as photo, dudikas.name as dudika, mentors.name as pembimbing, ploatings.start_date as sd, ploatings.finish_date as fd, ploatings.start_time as st, ploatings.finish_time as ft');
+        $this->db->from('ploatings');
+        $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
+        $this->db->join('dudikas', 'dudikas.dudika_id = ploatings.dudika_id');
+        $this->db->join('mentors', 'mentors.mentor_id = ploatings.mentor_id');
+        $this->db->where('ploatings.instruktur_id', $instruktur_id);
+        $this->db->order_by('partisipants.tapel_id', 'DESC');
+        $this->db->order_by('ploatings.dudika_id', 'DESC');
+        return $this->db->get()->result();
+    }
+
     public function getPesertaPloatings($mentor_id)
     {
-        $this->db->select('*, partisipants.name as peserta, dudikas.name as dudika, instrukturs.name as instruktur, ploatings.start_date as sd, ploatings.finish_date as fd, ploatings.start_time as st, ploatings.finish_time as ft');
+        $this->db->select('*, partisipants.name as peserta, partisipants.photo as photo, dudikas.name as dudika, instrukturs.name as instruktur, ploatings.start_date as sd, ploatings.finish_date as fd, ploatings.start_time as st, ploatings.finish_time as ft');
         $this->db->from('ploatings');
         $this->db->join('partisipants', 'partisipants.partisipant_id = ploatings.partisipant_id');
         $this->db->join('dudikas', 'dudikas.dudika_id = ploatings.dudika_id');
@@ -62,6 +75,7 @@ class Peserta_model extends CI_model
         $this->db->from('partisipants');
         $this->db->join('users', 'users.user_id = partisipants.user_id');
         $this->db->join('roles', 'roles.role_id = users.role_id');
+        $this->db->join('majors', 'majors.major_id = partisipants.major_id');
         $this->db->where('partisipant_id', $partisipant_id);
         return $this->db->get()->row();
     }

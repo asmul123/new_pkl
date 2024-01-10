@@ -13,6 +13,14 @@ class Jurnal_model extends CI_model
         return $this->db->get()->result();
     }
 
+    public function getThisJurnal($jurnal_id)
+    {
+        $this->db->select('*');
+        $this->db->from('jurnals');
+        $this->db->where('jurnal_id', $jurnal_id);
+        return $this->db->get()->row();
+    }
+
     public function getJurnalDetail($jurnal_id)
     {
         $this->db->select('*');

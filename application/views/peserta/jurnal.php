@@ -10,7 +10,7 @@
         <div class="card-body">
           <?= $this->session->flashdata('pesan'); ?>
           <div class="table-responsive text-nowrap">
-            <table class="table">
+            <table class="table table-borderless" id="example">
               <thead>
                 <tr class="text-nowrap">
                   <th>#</th>

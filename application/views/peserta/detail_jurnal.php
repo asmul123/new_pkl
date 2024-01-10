@@ -52,11 +52,11 @@
                     <td><?= $j->working_goal ?></td>
                     <td><?= $j->instruktur_noted ?></td>
                     <td><?php
-                        if ($status == 1) {
+                        if ($status == 2) {
                         ?>
                         <button class="btn btn-sm btn-success">Diterima</button>
                       <?php
-                        } else if ($status == 2) {
+                        } else if ($status == 3) {
                       ?>
                         <button class="btn btn-sm btn-danger">Ditolak</button>
                       <?php

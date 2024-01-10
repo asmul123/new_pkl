@@ -349,6 +349,47 @@ class Peserta extends CI_Controller
 		redirect(base_url('peserta/jurnal'));
 	}
 
+	public function jurnaledit($jurnal_id)
+	{
+		$this->load->model('Ploating_model');
+		$this->load->model('Jurnal_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Tambah Jurnal - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "jurnal";
+		$data['biodata'] = $biodata;
+		$data['jurnal_id'] = $jurnal_id;
+		$data['ploating'] = $this->Ploating_model->getAllPloatingPartisipant($biodata->partisipant_id);
+		$data['jurnal'] = $this->Jurnal_model->getThisJurnal($jurnal_id);
+		$this->form_validation->set_rules('jurnal_date', 'Tanggal Jurnal', 'required|trim');
+		$this->form_validation->set_rules('division', 'Unit Kerja', 'required|trim');
+		$this->form_validation->set_rules('ploating_id', 'Nama Dudika', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->load->view('templates/header', $header);
+			$this->load->view('templates/sidebar');
+			$this->load->view('templates/navbar');
+			$this->load->view('peserta/edit_jurnal', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$jurnal_date = $this->input->post('jurnal_date');
+			$division = $this->input->post('division');
+			$ploating_id = $this->input->post('ploating_id');
+			$data = [
+				'ploating_id' => $ploating_id,
+				'jurnal_date' => $jurnal_date,
+				'division' => $division
+			];
+			$this->db->set($data);
+			$this->db->where('jurnal_id', $jurnal_id);
+			$this->db->update('jurnals');
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>');
+			redirect(base_url('peserta/jurnal'));
+		}
+	}
+
 	public function jurnaldetailadd($jurnal_id)
 	{
 		$this->load->model('Ploating_model');

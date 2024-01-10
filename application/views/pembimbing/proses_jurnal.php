@@ -55,7 +55,7 @@
                                     <span class="input-group-text"><i class="bx bx-notepad"></i></span>
                                     <select name="status" class="form-control">
                                         <option value="2">Diterima</option>
-                                        <option value="2">Ditolak</option>
+                                        <option value="3">Ditolak</option>
                                     </select>
                                     <small class="text-danger"><?= form_error('status'); ?></small>
                                 </div>

@@ -220,4 +220,89 @@ class Instruktur extends CI_Controller
 			redirect(base_url('instruktur/biodata'));
 		}
 	}
+
+	public function peserta()
+	{
+		$this->load->model('Peserta_model');
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Daftar Peserta - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "peserta";
+		$data['peserta'] = $this->Peserta_model->getPesertaInstrukturs($biodata->instruktur_id);
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/sidebar');
+		$this->load->view('templates/navbar');
+		$this->load->view('instruktur/peserta', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function pesertadetail($partisipant_id)
+	{
+		$this->load->model('Peserta_model');
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Daftar Peserta - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "peserta";
+		$data['partisipant_id'] = $partisipant_id;
+		$data['peserta'] = $this->Peserta_model->getThisPeserta($partisipant_id);
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/sidebar');
+		$this->load->view('templates/navbar');
+		$this->load->view('instruktur/detail_peserta', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function presensidetail($partisipant_id)
+	{
+		$this->load->model('Peserta_model');
+		$this->load->model('Ploating_model');
+		$this->load->model('Scheme_model');
+		$this->load->model('Presensi_model');
+		$today = date('Y-m-d');
+		$partisipantploating = $this->Ploating_model->getPartisipantPloating($partisipant_id, $today);
+		$workingscheme = $this->Scheme_model->getWorkingScheme($partisipantploating->row()->ploating_id, $today);
+		$presencenow = $this->Presensi_model->getPresenceNow($partisipantploating->row()->ploating_id);
+		$data['day'] = date('w') + 1;
+		$data['jumlah_ploating'] = $partisipantploating->num_rows();
+		$data['ploating'] = $partisipantploating->row();
+		$data['jumlah_scheme'] = $workingscheme->num_rows();
+		$data['scheme'] = $workingscheme->row();
+		$data['jumlah_presensi'] = $presencenow->num_rows();
+		$data['presensi'] = $presencenow->row();
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Daftar Peserta - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "peserta";
+		$data['partisipant_id'] = $partisipant_id;
+		$data['peserta'] = $this->Peserta_model->getThisPeserta($partisipant_id);
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/sidebar');
+		$this->load->view('templates/navbar');
+		$this->load->view('instruktur/detail_presensi', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function jurnaldetail($partisipant_id)
+	{
+		$this->load->model('Peserta_model');
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Daftar Peserta - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "peserta";
+		$data['partisipant_id'] = $partisipant_id;
+		$data['peserta'] = $this->Peserta_model->getThisPeserta($partisipant_id);
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/sidebar');
+		$this->load->view('templates/navbar');
+		$this->load->view('instruktur/detail_jurnal', $data);
+		$this->load->view('templates/footer');
+	}
 }
