@@ -138,7 +138,7 @@ class Peserta extends CI_Controller
 		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
 		$presencenow = $this->Presensi_model->getPresenceNow($ploating_id)->row();
 		$ploating = $this->Ploating_model->getPartisipantPloating($biodata->partisipant_id, $today)->row();
-		$scheme = $this->Scheme_model->getWorkingScheme($partisipantploating->row()->ploating_id, $today)->row();
+		$scheme = $this->Scheme_model->getWorkingScheme($ploating_id, $today)->row();
 		if ($scheme) {
 			$finish_time = $scheme->finish_time;
 		} else {
