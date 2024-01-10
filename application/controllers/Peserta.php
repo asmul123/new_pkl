@@ -430,7 +430,49 @@ class Peserta extends CI_Controller
 		];
 		$this->db->insert('jurnal_details', $data);
 		$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>');
+		</div>');
 		redirect(base_url('peserta/jurnaldetail/' . $jurnal_id));
+	}
+
+	public function jurnaldetailedit($jurnal_detail_id)
+	{
+		$this->load->model('Ploating_model');
+		$this->load->model('Jurnal_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Edit Jurnal - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "jurnal";
+		$data['biodata'] = $biodata;
+		$data['jurnal_detail_id'] = $jurnal_detail_id;
+		$data['ploating'] = $this->Ploating_model->getAllPloatingPartisipant($biodata->partisipant_id);
+		$data['jurnaldetail'] = $this->Jurnal_model->getThisJurnalDetail($jurnal_detail_id);
+		$this->form_validation->set_rules('working_name', 'Nama Pekerjaan', 'required|trim');
+		$this->form_validation->set_rules('working_plan', 'Rencana Kegiatan', 'required|trim');
+		$this->form_validation->set_rules('working_goal', 'Hasil Pekerjaan', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->load->view('templates/header', $header);
+			$this->load->view('templates/sidebar');
+			$this->load->view('templates/navbar');
+			$this->load->view('peserta/edit_jurnaldetail', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$working_name = $this->input->post('working_name');
+			$working_plan = $this->input->post('working_plan');
+			$working_goal = $this->input->post('working_goal');
+			$data = [
+				'working_name' => $working_name,
+				'working_plan' => $working_plan,
+				'working_goal' => $working_goal,
+				'status' => '1'
+			];
+			$this->db->set($data);
+			$this->db->where('jurnal_detail_id', $jurnal_detail_id);
+			$this->db->update('jurnal_details');
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>');
+			redirect(base_url('peserta/jurnaldetail/' . $this->Jurnal_model->getThisJurnalDetail($jurnal_detail_id)->jurnal_id));
+		}
 	}
 }
