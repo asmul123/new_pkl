@@ -115,5 +115,57 @@
                     </div>
                 </div>
             </div>
+            <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+                <div class="card">
+                    <h5 class="card-header">Pengajuan Skema Peserta PKL</h5>
+                    <div class="card-body">
+                        <?= $this->session->flashdata('pesan'); ?>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-borderless" id="example3">
+                                <thead>
+                                    <tr class="text-nowrap">
+                                        <th>#</th>
+                                        <th>Aksi</th>
+                                        <th>Nama Peserta</th>
+                                        <th>Rentang Tanggal</th>
+                                        <th>Jam Masuk</th>
+                                        <th>Jam Pulang</th>
+                                        <th>Hari Libur</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 0;
+                                    foreach ($skema as $s) {
+                                    ?>
+                                        <tr>
+                                            <th scope="row"><?= ++$no ?></th>
+                                            <td>
+                                                <a href="<?= base_url('pembimbing/terimaskema/' . $s->scheme_id) ?>" class="btn btn-sm btn-primary">Terima</a>
+                                                <a href="<?= base_url('pembimbing/tolakskema/' . $s->scheme_id) ?>" class="btn btn-sm btn-danger">Tolak</a>
+                                            </td>
+                                            <td><?= $s->name ?></td>
+                                            <td><?= date_indo($s->start_date) . " s.d. " . date_indo($s->finish_date) ?></td>
+                                            <td><?= $s->start_time ?></td>
+                                            <td><?= $s->finish_time ?></td>
+                                            <td>
+                                                <ul>
+                                                    <?php
+                                                    $off_days = explode("#", $s->off_days);
+                                                    $count = count($off_days);
+                                                    for ($i = 1; $i < $count; $i++) {
+                                                        echo "<li>" . nomor_hari($off_days[$i]) . "</li>";
+                                                    }
+                                                    ?>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- / Content -->

@@ -17,7 +17,7 @@ class Ploating_model extends CI_model
 
     public function getThisPloatingPeserta($partisipant_id)
     {
-        $this->db->select('dudikas.name');
+        $this->db->select('*');
         $this->db->from('ploatings');
         $this->db->join('dudikas', 'dudikas.dudika_id = ploatings.dudika_id');
         $this->db->where('partisipant_id', $partisipant_id);

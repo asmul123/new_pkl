@@ -58,6 +58,8 @@ class Peserta extends CI_Controller
 		$partisipantploating = $this->Ploating_model->getPartisipantPloating($biodata->partisipant_id, $today);
 		$workingscheme = $this->Scheme_model->getWorkingScheme($partisipantploating->row()->ploating_id, $today);
 		$presencenow = $this->Presensi_model->getPresenceNow($partisipantploating->row()->ploating_id);
+		$data['allploating'] = $this->Ploating_model->getThisPloatingPeserta($biodata->partisipant_id)->result();
+		$data['workingscheme'] = $this->Scheme_model->getAllWorkingScheme($biodata->partisipant_id);
 		$data['day'] = date('w') + 1;
 		$data['jumlah_ploating'] = $partisipantploating->num_rows();
 		$data['ploating'] = $partisipantploating->row();
@@ -474,5 +476,130 @@ class Peserta extends CI_Controller
 		</div>');
 			redirect(base_url('peserta/jurnaldetail/' . $this->Jurnal_model->getThisJurnalDetail($jurnal_detail_id)->jurnal_id));
 		}
+	}
+
+	public function skemaadd()
+	{
+		$this->load->model('Ploating_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Ajukan Skema - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "presensi";
+		$data['biodata'] = $biodata;
+		$data['dudika'] = $this->Ploating_model->getAllPloatingPartisipant($biodata->partisipant_id);
+		$this->form_validation->set_rules('ploating_id', 'Nama Dudika', 'required|trim');
+		$this->form_validation->set_rules('start_date', 'Tanggal Mulai Skema', 'required|trim');
+		$this->form_validation->set_rules('start_time', 'Waktu Mulai', 'required|trim');
+		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir Skema', 'required|trim');
+		$this->form_validation->set_rules('finish_time', 'Waktu Pulang', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->load->view('templates/header', $header);
+			$this->load->view('templates/sidebar');
+			$this->load->view('templates/navbar');
+			$this->load->view('peserta/add_skema', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$ploating_id = $this->input->post('ploating_id');
+			$start_date = $this->input->post('start_date');
+			$start_time = $this->input->post('start_time');
+			$finish_date = $this->input->post('finish_date');
+			$finish_time = $this->input->post('finish_time');
+			$off_days = $this->input->post('off_days');
+			$count_off = count($off_days);
+			$offdays = "";
+			for ($j = 0; $j < $count_off; $j++) {
+				$offdays = $offdays . "#" . $off_days[$j];
+			}
+			$data = [
+				'ploating_id' => $ploating_id,
+				'start_date' => $start_date,
+				'finish_date' => $finish_date,
+				'start_time' => $start_time,
+				'finish_time' => $finish_time,
+				'off_days' => $offdays,
+				'status' => '1'
+			];
+			$this->db->insert('working_schemes', $data);
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil Ajukan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>');
+			redirect(base_url('peserta/presensi'));
+		}
+	}
+
+	public function skemaedit($scheme_id)
+	{
+		$this->load->model('Ploating_model');
+		$this->load->model('Scheme_model');
+		$biodata = $this->Peserta_model->getBioPeserta($this->session->userdata('email'));
+		$header['photo'] = $biodata->photo;
+		$header['name'] = $biodata->name;
+		$header['role'] = $biodata->role;
+		$header['title'] = "Ubah Pengajuan Skema - Jurnal PKL Online SMKN 1 GARUT";
+		$header['menuactive'] = "presensi";
+		$data['biodata'] = $biodata;
+		$data['dudika'] = $this->Ploating_model->getAllPloatingPartisipant($biodata->partisipant_id);
+		$data['skema'] = $this->Scheme_model->getThisScheme($scheme_id);
+		$data['scheme_id'] = $scheme_id;
+		if ($this->Scheme_model->getThisScheme($scheme_id)->status != 1) {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">Pengajuan yang sudah di proses tidak dapat diubah<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>');
+			redirect(base_url('peserta/presensi'));
+		}
+		$this->form_validation->set_rules('ploating_id', 'Nama Dudika', 'required|trim');
+		$this->form_validation->set_rules('start_date', 'Tanggal Mulai Skema', 'required|trim');
+		$this->form_validation->set_rules('start_time', 'Waktu Mulai', 'required|trim');
+		$this->form_validation->set_rules('finish_date', 'Tanggal Akhir Skema', 'required|trim');
+		$this->form_validation->set_rules('finish_time', 'Waktu Pulang', 'required|trim');
+		if ($this->form_validation->run() == false) {
+			$this->load->view('templates/header', $header);
+			$this->load->view('templates/sidebar');
+			$this->load->view('templates/navbar');
+			$this->load->view('peserta/edit_skema', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$ploating_id = $this->input->post('ploating_id');
+			$start_date = $this->input->post('start_date');
+			$start_time = $this->input->post('start_time');
+			$finish_date = $this->input->post('finish_date');
+			$finish_time = $this->input->post('finish_time');
+			$off_days = $this->input->post('off_days');
+			$count_off = count($off_days);
+			$offdays = "";
+			for ($j = 0; $j < $count_off; $j++) {
+				$offdays = $offdays . "#" . $off_days[$j];
+			}
+			$data = [
+				'ploating_id' => $ploating_id,
+				'start_date' => $start_date,
+				'finish_date' => $finish_date,
+				'start_time' => $start_time,
+				'finish_time' => $finish_time,
+				'off_days' => $offdays,
+				'status' => '1'
+			];
+			$this->db->set($data);
+			$this->db->where('scheme_id', $scheme_id);
+			$this->db->update('working_schemes');
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil Diubah<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>');
+			redirect(base_url('peserta/presensi'));
+		}
+	}
+
+	public function skemahapus($scheme_id)
+	{
+		$this->load->model('Scheme_model');
+		if ($this->Scheme_model->getThisScheme($scheme_id)->status != 1) {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible" role="alert">Pengajuan yang sudah di proses tidak dapat dihapus<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>');
+			redirect(base_url('peserta/presensi'));
+		}
+		$this->db->where('scheme_id', $scheme_id);
+		$this->db->delete('working_schemes');
+		$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil Dihapus<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>');
+		redirect(base_url('peserta/presensi'));
 	}
 }

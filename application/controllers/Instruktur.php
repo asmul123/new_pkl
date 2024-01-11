@@ -17,6 +17,7 @@ class Instruktur extends CI_Controller
 	{
 		$this->load->model('Presensi_model');
 		$this->load->model('Jurnal_model');
+		$this->load->model('Scheme_model');
 		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
 		$header['photo'] = $biodata->photo;
 		$header['name'] = $biodata->name;
@@ -26,6 +27,7 @@ class Instruktur extends CI_Controller
 		$data['panduan'] = $this->Instruktur_model->getPanduan($biodata->instruktur_id)->document;
 		$data['presensi'] = $this->Presensi_model->getPresenceThisInstruktur($biodata->instruktur_id, '1');
 		$data['jurnal'] = $this->Jurnal_model->getJurnalThisInstruktur($biodata->instruktur_id, '1');
+		$data['skema'] = $this->Scheme_model->getSchemeThisInstruktur($biodata->instruktur_id, '1');
 		$this->load->view('templates/header', $header);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/navbar');
@@ -45,6 +47,50 @@ class Instruktur extends CI_Controller
 			$this->db->set($data);
 			$this->db->where('presence_id', $presenceID);
 			$this->db->update('presences');
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		  </div>');
+			redirect(base_url());
+		} else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-warning alert-dismissible" role="alert">Data Tidak ditemukan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		  </div>');
+			redirect(base_url());
+		}
+	}
+
+	public function terimaskema($skemaID)
+	{
+		$this->load->model('Scheme_model');
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$cekscheme = $this->Scheme_model->cekSchemeInstruktur($biodata->instruktur_id, $skemaID);
+		if ($cekscheme != 0) {
+			$data = [
+				'status' => '2'
+			];
+			$this->db->set($data);
+			$this->db->where('scheme_id', $skemaID);
+			$this->db->update('working_schemes');
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		  </div>');
+			redirect(base_url());
+		} else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-warning alert-dismissible" role="alert">Data Tidak ditemukan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		  </div>');
+			redirect(base_url());
+		}
+	}
+
+	public function tolakskema($skemaID)
+	{
+		$this->load->model('Scheme_model');
+		$biodata = $this->Instruktur_model->getBioInstruktur($this->session->userdata('email'));
+		$cekscheme = $this->Scheme_model->cekSchemeInstruktur($biodata->instruktur_id, $skemaID);
+		if ($cekscheme != 0) {
+			$data = [
+				'status' => '3'
+			];
+			$this->db->set($data);
+			$this->db->where('scheme_id', $skemaID);
+			$this->db->update('working_schemes');
 			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible" role="alert">Data Berhasil disimpan<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		  </div>');
 			redirect(base_url());

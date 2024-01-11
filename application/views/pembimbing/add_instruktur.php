@@ -159,13 +159,13 @@
                                     <span class="input-group-text"><i class="bx bx-calendar"></i></span>
                                     <select name="off_days[]" class="form-control" placeholder="Hari Libur Kerja" multiple>
                                         <option value="" selected>Pilih Hari Libur</option>
-                                        <option value="0">Minggu</option>
-                                        <option value="1">Senin</option>
-                                        <option value="2">Selasa</option>
-                                        <option value="3">Rabu</option>
-                                        <option value="4">Kamis</option>
-                                        <option value="5">Jumat</option>
-                                        <option value="6">Sabtu</option>
+                                        <option value="1">Minggu</option>
+                                        <option value="2">Senin</option>
+                                        <option value="3">Selasa</option>
+                                        <option value="4">Rabu</option>
+                                        <option value="5">Kamis</option>
+                                        <option value="6">Jumat</option>
+                                        <option value="7">Sabtu</option>
                                     </select>
                                     <small class="text-danger"><?= form_error('off_days[]'); ?></small>
                                 </div>

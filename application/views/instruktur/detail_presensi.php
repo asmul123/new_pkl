@@ -19,10 +19,6 @@
           <h5 class="card-header">Presensi Peserta</h5>
           <!-- Account -->
           <div class="card-body">
-            rekap
-          </div>
-          <hr class="my-0" />
-          <div class="card-body">
             <div class="row">
               <div class="table-responsive text-nowrap">
                 <table class="table table-borderless" id="example">
